@@ -1,0 +1,93 @@
+import { BigNumber, ethers } from "ethers";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import ColoredButton from "../../components/ColoredButton";
+import EventDescription from "../../components/EventDescription";
+import Header from "../../components/Header";
+import { getContract } from "../../connector/useContract";
+import { BeatLoader } from "react-spinners";
+
+let provider;
+let walletSigner;
+let walletAddress;
+export default function PurchaseEvent({ metamaskProvider }) {
+  const { eventId } = useParams();
+  const [event, setEvent] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  // const contract = getContract(metamaskProvider);
+  provider = new ethers.providers.Web3Provider(metamaskProvider, "any");
+
+  const [contract, setContract] = useState(null);
+  useEffect(() => {
+    setLoading(true);
+    getContract(metamaskProvider).then((contract) => {
+      contract._events(BigNumber.from(eventId)).then((event) => {
+        setEvent(event);
+        setLoading(false);
+      });
+      contract
+        .isPurchased(BigNumber.from(eventId))
+        .then((purchased) => {
+          if (purchased) {
+            alert("You already purchase this event.");
+            navigate(`/join-stream/${eventId}`);
+            // setLoading(false);
+          }
+        })
+        .catch((err) => console.error(err));
+    });
+    walletSigner = provider.getSigner();
+    walletSigner.getAddress().then((address) => {
+      walletAddress = address;
+    });
+  }, []);
+  function handlePurchaseEvent() {
+    setLoading(true);
+    if (!walletAddress) {
+      alert("connect to wallet");
+      return;
+    }
+
+    const overrides = {
+      value: event._price.toString(),
+      gasLimit: 90000,
+    };
+    getContract(metamaskProvider).then((contract) => {
+      contract
+        .addPerson(BigNumber.from(eventId), overrides)
+        .then((res) => {
+          res.wait().then((res) => {
+            if (res.status) {
+              alert("Purchase event successfully");
+              navigate(`/join-stream/${eventId}`);
+            }
+          });
+        })
+        .catch((err) => {
+          if (err.code === 4001) alert("User denied purchase.");
+          setLoading(false);
+        });
+    });
+  }
+
+  return (
+    <>
+      <Header metamaskProvider={metamaskProvider} />
+      <div className="relative bg-event bg-cover rounded-xl w-3/4 pt-[36.25%] m-auto">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <div className="col-start-2 col-span-4">
+            <ColoredButton
+              stylec="items-center text-center"
+              onClick={handlePurchaseEvent}
+              disabled={loading}
+            >
+              {loading ? <BeatLoader loading={loading} /> : <>PURCHASE EVENT</>}
+            </ColoredButton>
+          </div>
+        </div>
+      </div>
+      <EventDescription event={event} stylec="w-3/4 m-auto" />
+    </>
+  );
+}

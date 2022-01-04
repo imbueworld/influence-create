@@ -1,0 +1,12 @@
+#root {
+  background: linear-gradient(153.29deg, #ffffff 16.74%, #ffe6eb 115.98%);
+  min-height: 100vh;
+}
+@font-face {
+  font-family: "LuloCleanW01_One";
+  src: url("./assets/font/Lulo-Clean-W01-One.woff2") format("woff2");
+}
+/* "//db.onlinewebfonts.com/t/116d187134420de5733c7c45bbc80c46.woff2 */
+.font-Lulo {
+  font-family: "LuloCleanW01_One";
+}
