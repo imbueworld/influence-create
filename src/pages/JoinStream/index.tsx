@@ -5,7 +5,7 @@ import { BigNumber } from "ethers";
 import { getStreamStatus } from "../../utils/apiFactory";
 import CryptoJS from "crypto-js";
 import ReactHlsPlayer from "react-hls-player";
-import ColoredButton from "../../components/ColoredButton";
+// import ColoredButton from "../../components/ColoredButton";
 import Header from "../../components/Header";
 import EventDescription from "../../components/EventDescription";
 import { BeatLoader } from "react-spinners";
@@ -15,8 +15,6 @@ export default function JoinStream({ metamaskProvider }) {
 
   const [loading, setLoading] = useState(false);
   const [event, setEvent] = useState(null);
-  const [playbackId, setPlaybackId] = useState(null);
-  const [streamId, setStreamId] = useState(null);
   const [isActive, setIsActive] = useState(false);
   const [playbackURL, setPlaybackURL] = useState(null);
   const playerRef = useRef();
@@ -33,19 +31,16 @@ export default function JoinStream({ metamaskProvider }) {
         return;
       }
       const event = await contract._events(BigNumber.from(eventId));
-      console.log(event);
       setEvent(event);
       let streamData = event._streamData;
       streamData = CryptoJS.AES.decrypt(streamData, event._name).toString(
         CryptoJS.enc.Utf8
       );
       const streamArray = streamData.split("&&");
-      setStreamId(streamArray[0]);
-      const isActive = (await getStreamStatus(streamArray[0])).data.isActive;
-      setPlaybackId(streamArray[2]);
-      setPlaybackURL(
-        `https://cdn.livepeer.com/hls/${streamArray[2]}/index.m3u8`
-      );
+      const streamId = streamArray[0];
+      const playbackId = streamArray[2];
+      const isActive = (await getStreamStatus(streamId)).data.isActive;
+      setPlaybackURL(`https://cdn.livepeer.com/hls/${playbackId}/index.m3u8`);
 
       setIsActive(isActive);
       setLoading(false);

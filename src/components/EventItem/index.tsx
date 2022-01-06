@@ -86,7 +86,6 @@ export default function EventItem({ event, metamaskProvider }) {
 
           getStreamStatus(streamArray[0])
             .then((res) => {
-              console.log(res);
               setIsActive(Boolean(res.data.isActive));
               setLoading(false);
             })

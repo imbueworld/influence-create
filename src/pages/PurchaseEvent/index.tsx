@@ -1,5 +1,5 @@
-import { BigNumber, ethers } from "ethers";
-import React, { useEffect, useState } from "react";
+import { BigNumber } from "ethers";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ColoredButton from "../../components/ColoredButton";
 import EventDescription from "../../components/EventDescription";
@@ -7,45 +7,32 @@ import Header from "../../components/Header";
 import { getContract } from "../../connector/useContract";
 import { BeatLoader } from "react-spinners";
 
-let provider;
-let walletSigner;
-let walletAddress;
 export default function PurchaseEvent({ metamaskProvider }) {
   const { eventId } = useParams();
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  // const contract = getContract(metamaskProvider);
-  provider = new ethers.providers.Web3Provider(metamaskProvider, "any");
 
-  const [contract, setContract] = useState(null);
   useEffect(() => {
-    setLoading(true);
-    getContract(metamaskProvider).then((contract) => {
-      contract._events(BigNumber.from(eventId)).then((event) => {
-        setEvent(event);
-        setLoading(false);
-      });
-      contract
-        .isPurchased(BigNumber.from(eventId))
-        .then((purchased) => {
-          if (purchased) {
-            alert("You already purchase this event.");
-            navigate(`/join-stream/${eventId}`);
-            // setLoading(false);
-          }
-        })
-        .catch((err) => console.error(err));
-    });
-    walletSigner = provider.getSigner();
-    walletSigner.getAddress().then((address) => {
-      walletAddress = address;
-    });
+    async function fetchData() {
+      setLoading(true);
+      const contract = await getContract(metamaskProvider);
+      const event = await contract._events(BigNumber.from(eventId));
+      setEvent(event);
+      const purchased = await contract.isPurchased(BigNumber.from(eventId));
+      setLoading(false);
+      if (purchased) {
+        alert("You already purchase this event.");
+        navigate(`/join-stream/${eventId}`);
+      }
+    }
+    fetchData().catch((err) => console.error(err));
   }, []);
   function handlePurchaseEvent() {
     setLoading(true);
-    if (!walletAddress) {
+    if (!metamaskProvider.selectedAddress) {
       alert("connect to wallet");
+      navigate("/");
       return;
     }
 
@@ -53,6 +40,7 @@ export default function PurchaseEvent({ metamaskProvider }) {
       value: event._price.toString(),
       gasLimit: 90000,
     };
+
     getContract(metamaskProvider).then((contract) => {
       contract
         .addPerson(BigNumber.from(eventId), overrides)
