@@ -8,6 +8,7 @@ import { BeatLoader } from "react-spinners";
 import { livepeer } from "../../utils/livepeer";
 import EventDescription from "../../components/EventDescription";
 import { deleteStream, getStreamStatus } from "../../utils/apiFactory";
+import ChatContainer from "../../components/ChatContainer";
 // import { RotateLoader } from "react-spinners";
 const CryptoJS = require("crypto-js");
 
@@ -17,7 +18,6 @@ const CAMERA_CONSTRAINTS = {
 };
 
 export default function StartStream({ metamaskProvider }) {
-  // const contract = getContract(metamaskProvider);
 
   const { eventId } = useParams();
 
@@ -28,7 +28,7 @@ export default function StartStream({ metamaskProvider }) {
   const [connectedToLive, setConnectedToLive] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false); //delete stream from livepeer so that ended event does not listed from available lists.
   const [cameraEnabled, setCameraEnabled] = useState(false);
-
+  const [walletAddress,setWalletAddres]=useState(null);
   const wsRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const timer = useRef(null);
@@ -44,6 +44,7 @@ export default function StartStream({ metamaskProvider }) {
     async function fetchData() {
       await enableCamera();
       const contract = await getContract(metamaskProvider);
+      console.log(metamaskProvider)
       const event = await contract._events(BigNumber.from(eventId));
       setEvent(event);
       nameRef.current = event._name;
@@ -88,7 +89,7 @@ export default function StartStream({ metamaskProvider }) {
 
   const updateCanvas = () => {
     if (
-      videoRef.current &&
+      canvasRef.current&&videoRef.current &&
       (videoRef.current.ended || videoRef.current.paused)
     ) {
       return;
@@ -179,6 +180,8 @@ export default function StartStream({ metamaskProvider }) {
       .catch((err) => console.error(err));
   }
 
+  function handleChat(){}
+
   return (
     <>
       <Header metamaskProvider={metamaskProvider} />
@@ -210,10 +213,25 @@ export default function StartStream({ metamaskProvider }) {
           <canvas ref={canvasRef} hidden></canvas>
         </div>
 
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <div className="col-start-3 col-end-4"></div>
-          {/* <div className="col-end-7">
-            <button>
+        <div className="absolute w-full top-[90%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 grid grid-cols-6 items-center">
+          <div className="col-start-2 col-span-4">
+            {isDeleting ? (
+                <BeatLoader loading={isDeleting} />
+              ) : streaming ? (
+                <ColoredButton onClick={handleStopStreaming}>
+                  STOP STREAM
+                </ColoredButton>
+              ) : (
+                <ColoredButton
+                  onClick={handleStartStreaming}
+                  disabled={!cameraEnabled}
+                >
+                  START STREAM
+                </ColoredButton>
+              )}
+          </div>
+          <div className="col-end-7 col-span-1">
+            <button onClick={handleChat}>
               <svg
                 width="37"
                 height="35"
@@ -227,25 +245,10 @@ export default function StartStream({ metamaskProvider }) {
                 />
               </svg>
             </button>
-          </div> */}
+          </div>
         </div>
       </div>
-      <div className="my-3 m-auto">
-        {isDeleting ? (
-          <BeatLoader loading={isDeleting} />
-        ) : streaming ? (
-          <ColoredButton onClick={handleStopStreaming}>
-            STOP STREAM
-          </ColoredButton>
-        ) : (
-          <ColoredButton
-            onClick={handleStartStreaming}
-            disabled={!cameraEnabled}
-          >
-            START STREAM
-          </ColoredButton>
-        )}
-      </div>
+
       <EventDescription event={event} stylec="w-3/4 mx-auto" />
     </>
   );

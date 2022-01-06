@@ -8,6 +8,7 @@ import PurchaseEvent from "./pages/PurchaseEvent";
 import ListEvent from "./pages/ListEvent";
 import JoinStream from "./pages/JoinStream";
 import WrongNetwork from "./pages/WrongNetwork";
+import Test from "./pages/Test";
 
 function App({ metamaskProvider }) {
   return (
@@ -41,6 +42,10 @@ function App({ metamaskProvider }) {
           <Route
             path="/wrong-network"
             element={<WrongNetwork metamaskProvider={metamaskProvider} />}
+          />
+          <Route
+            path="/test"
+            element={<Test/>}
           />
         </Routes>
       </HashRouter>
