@@ -209,9 +209,16 @@ export default function StartStream({ metamaskProvider }) {
         <div className="my-3 text-blue-700">Connected to Livepeer.</div>
       ) : null}
 
-      <div className="relative bg-event bg-cover bg-center rounded-xl w-2/3 pt-[36.25%] m-auto">
-        <video ref={videoRef} muted hidden />
-        <canvas className="rounded-xl w-full h-full" ref={canvasRef}></canvas>
+      <div className="relative bg-event bg-cover bg-center rounded-xl w-2/3  m-auto">
+        <div>
+          <video
+            ref={videoRef}
+            muted
+            playsInline
+            className="rounded-xl w-full h-full"
+          />
+          <canvas ref={canvasRef} hidden></canvas>
+        </div>
 
         {loading ? (
           <div className="absolute w-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">

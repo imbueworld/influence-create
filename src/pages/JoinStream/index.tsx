@@ -5,18 +5,23 @@ import { BigNumber } from "ethers";
 import { getStreamStatus } from "../../utils/apiFactory";
 import CryptoJS from "crypto-js";
 import ReactHlsPlayer from "react-hls-player";
-// import ColoredButton from "../../components/ColoredButton";
+import ColoredButton from "../../components/ColoredButton";
 import Header from "../../components/Header";
 import EventDescription from "../../components/EventDescription";
 import { BeatLoader } from "react-spinners";
+import ChatContainer from "../../components/ChatContainer";
 export default function JoinStream({ metamaskProvider }) {
   const { eventId } = useParams();
-  // const contract = getContract(metamaskProvider);
+
+  const walletAddress = metamaskProvider.selectedAddress;
 
   const [loading, setLoading] = useState(false);
   const [event, setEvent] = useState(null);
   const [isActive, setIsActive] = useState(false);
   const [playbackURL, setPlaybackURL] = useState(null);
+  const [chatting, setChatting] = useState(false);
+  const [streamId, setStreamId] = useState(null);
+
   const playerRef = useRef();
   const navigate = useNavigate();
   useEffect(() => {
@@ -37,9 +42,9 @@ export default function JoinStream({ metamaskProvider }) {
         CryptoJS.enc.Utf8
       );
       const streamArray = streamData.split("&&");
-      const streamId = streamArray[0];
+      setStreamId(streamArray[0]);
       const playbackId = streamArray[2];
-      const isActive = (await getStreamStatus(streamId)).data.isActive;
+      const isActive = (await getStreamStatus(streamArray[0])).data.isActive;
       setPlaybackURL(`https://cdn.livepeer.com/hls/${playbackId}/index.m3u8`);
 
       setIsActive(isActive);
@@ -47,6 +52,10 @@ export default function JoinStream({ metamaskProvider }) {
     }
     fetchData().catch((err) => console.error(err));
   }, []);
+
+  function handleChat(e) {
+    setChatting(e);
+  }
   return (
     <>
       <Header metamaskProvider={metamaskProvider} />
@@ -75,11 +84,35 @@ export default function JoinStream({ metamaskProvider }) {
             </div>
           </div>
         )}
-        {/* <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 grid grid-cols-6 items-center">
-          <div className="col-start-3 col-end-4">
-            <ColoredButton onClick={handleStartStream} label="START" />
+        <div className="absolute top-[90%] w-full left-1/2 transform -translate-x-1/2 -translate-y-1/2 grid grid-cols-6 items-center">
+          <div className="col-start-2 col-span-4">
+            <ColoredButton>START</ColoredButton>
           </div>
-        </div> */}
+          <div className="col-end-7 col-span-1">
+            <button onClick={handleChat}>
+              <svg
+                width="37"
+                height="35"
+                viewBox="0 0 37 35"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M18.5 32.6875C28.7166 32.6875 37 25.4401 37 16.5C37 7.55988 28.7166 0.3125 18.5 0.3125C8.28337 0.3125 0 7.55988 0 16.5C0 20.57 1.71819 24.2931 4.55562 27.1375C4.33131 29.487 3.59131 32.0631 2.77269 33.9964C2.59 34.4265 2.94381 34.9075 3.404 34.8335C8.621 33.9779 11.7221 32.6644 13.0702 31.9799C14.8414 32.4523 16.6669 32.6902 18.5 32.6875Z"
+                  fill="#FFE6EB"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {chatting ? (
+          <ChatContainer
+            username={walletAddress}
+            room={streamId}
+            handler={handleChat}
+          />
+        ) : null}
       </div>
       <EventDescription event={event} stylec="w-3/4 mx-auto" />
     </>

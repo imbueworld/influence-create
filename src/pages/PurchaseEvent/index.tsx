@@ -28,6 +28,7 @@ export default function PurchaseEvent({ metamaskProvider }) {
     }
     fetchData().catch((err) => console.error(err));
   }, []);
+
   function handlePurchaseEvent() {
     setLoading(true);
     if (!metamaskProvider.selectedAddress) {
