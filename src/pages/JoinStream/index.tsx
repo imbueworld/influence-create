@@ -54,7 +54,7 @@ export default function JoinStream({ metamaskProvider }) {
   }, []);
 
   function handleChat(e) {
-    setChatting(e);
+    // setChatting(e);
   }
   return (
     <>
@@ -86,7 +86,7 @@ export default function JoinStream({ metamaskProvider }) {
         )}
         <div className="absolute top-[90%] w-full left-1/2 transform -translate-x-1/2 -translate-y-1/2 grid grid-cols-6 items-center">
           <div className="col-start-2 col-span-4">
-            <ColoredButton>START</ColoredButton>
+            <ColoredButton disabled={!isActive}>START</ColoredButton>
           </div>
           <div className="col-end-7 col-span-1">
             <button onClick={handleChat}>

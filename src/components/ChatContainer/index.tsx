@@ -12,6 +12,7 @@ export default function ChatContainer({ username, room, handler }) {
   const chatroom = useRef(null);
   const feedback = useRef(null);
   const container = useRef(null);
+
   useEffect(() => {
     async function fetchData() {
       socket.current = await io(chatServerURL);
@@ -98,7 +99,11 @@ export default function ChatContainer({ username, room, handler }) {
           style={{ overflowY: "auto" }}
         >
           {messages.map((m) => (
-            <Message key={uuidv4()} message={m} />
+            <Message
+              key={uuidv4()}
+              message={m}
+              received={m.username === username}
+            />
           ))}
           <section ref={feedback}></section>
         </section>

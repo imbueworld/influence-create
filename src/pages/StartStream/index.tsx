@@ -186,7 +186,7 @@ export default function StartStream({ metamaskProvider }) {
   }
 
   function handleChat(e) {
-    setChatting(e);
+    // setChatting(e);
   }
 
   return (
