@@ -9,7 +9,7 @@ import ListEvent from "./pages/ListEvent";
 import JoinStream from "./pages/JoinStream";
 import WrongNetwork from "./pages/WrongNetwork";
 import Test from "./pages/Test";
-
+import SecureRoute from "./components/Routing/SecureRoute";
 function App({ metamaskProvider }) {
   return (
     <div className="container text-center m-auto font-Lulo">
@@ -21,23 +21,48 @@ function App({ metamaskProvider }) {
           />
           <Route
             path="/create-event"
-            element={<CreateEvent metamaskProvider={metamaskProvider} />}
+            element={
+              <SecureRoute
+                component={CreateEvent}
+                metamaskProvider={metamaskProvider}
+              />
+            }
           />
           <Route
             path="/start-stream/:eventId"
-            element={<StartStream metamaskProvider={metamaskProvider} />}
+            element={
+              <SecureRoute
+                component={StartStream}
+                metamaskProvider={metamaskProvider}
+              />
+            }
           />
           <Route
             path="/join-stream/:eventId"
-            element={<JoinStream metamaskProvider={metamaskProvider} />}
+            element={
+              <SecureRoute
+                component={JoinStream}
+                metamaskProvider={metamaskProvider}
+              />
+            }
           />
           <Route
             path="/purchase-event/:eventId"
-            element={<PurchaseEvent metamaskProvider={metamaskProvider} />}
+            element={
+              <SecureRoute
+                component={PurchaseEvent}
+                metamaskProvider={metamaskProvider}
+              />
+            }
           />
           <Route
             path="/list-event"
-            element={<ListEvent metamaskProvider={metamaskProvider} />}
+            element={
+              <SecureRoute
+                component={ListEvent}
+                metamaskProvider={metamaskProvider}
+              />
+            }
           />
           <Route
             path="/wrong-network"
@@ -45,7 +70,12 @@ function App({ metamaskProvider }) {
           />
           <Route
             path="/test"
-            element={<Test/>}
+            element={
+              <SecureRoute
+                metamaskProvider={metamaskProvider}
+                component={Test}
+              />
+            }
           />
         </Routes>
       </HashRouter>

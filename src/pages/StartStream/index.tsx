@@ -9,6 +9,7 @@ import { livepeer } from "../../utils/livepeer";
 import EventDescription from "../../components/EventDescription";
 import { deleteStream, getStreamStatus } from "../../utils/apiFactory";
 import ChatContainer from "../../components/ChatContainer";
+import Webcam from "react-webcam";
 // import { RotateLoader } from "react-spinners";
 const CryptoJS = require("crypto-js");
 
@@ -35,10 +36,12 @@ export default function StartStream({ metamaskProvider }) {
   const mediaRecorderRef = useRef(null);
   const timer = useRef(null);
 
-  const inputStreamRef = useRef(null);
-  const videoRef = useRef(null);
-  const canvasRef = useRef(null);
-  const requestAnimationRef = useRef(null);
+  // const inputStreamRef = useRef(null);
+  // const videoRef = useRef(null);
+  // const canvasRef = useRef(null);
+  // const requestAnimationRef = useRef(null);
+
+  const webcamRef = useRef(null);
   const nameRef = useRef();
   const navigate = useNavigate();
 
@@ -65,6 +68,10 @@ export default function StartStream({ metamaskProvider }) {
     });
   }, []);
 
+  useEffect(() => {
+    if (connectedToLive) window.clearInterval(timer.current);
+  }, [connectedToLive]);
+
   function getConnected() {
     getStreamStatus(streamId)
       .then((res) => {
@@ -74,6 +81,8 @@ export default function StartStream({ metamaskProvider }) {
   }
 
   const enableCamera = async () => {
+    await window.navigator.mediaDevices.getUserMedia(CAMERA_CONSTRAINTS);
+    /*
     inputStreamRef.current = await window.navigator.mediaDevices.getUserMedia(
       CAMERA_CONSTRAINTS
     );
@@ -86,10 +95,11 @@ export default function StartStream({ metamaskProvider }) {
     canvasRef.current.width = videoRef.current.clientWidth;
 
     requestAnimationRef.current = requestAnimationFrame(updateCanvas);
-
+*/
     setCameraEnabled(true);
   };
 
+  /*
   const updateCanvas = () => {
     if (
       canvasRef.current === null ||
@@ -116,7 +126,7 @@ export default function StartStream({ metamaskProvider }) {
 
     requestAnimationRef.current = requestAnimationFrame(updateCanvas);
   };
-
+*/
   function handleStartStreaming() {
     const wsUrl = `${livepeer.webSocketServerURL}/rtmp?key=${streamKey}`;
 
@@ -124,7 +134,7 @@ export default function StartStream({ metamaskProvider }) {
 
     wsRef.current.addEventListener("open", function open() {
       setStreaming(true);
-      mediaRecorderRef.current.start(300);
+      mediaRecorderRef.current.start(500);
 
       timer.current = window.setInterval(getConnected, 5000);
     });
@@ -139,25 +149,30 @@ export default function StartStream({ metamaskProvider }) {
       stopStreaming();
     });
 
-    const videoOutputStream = canvasRef.current.captureStream(24); // 24 FPS
+    // const videoOutputStream = canvasRef.current.captureStream(24); // 24 FPS
 
-    const audioStream = new MediaStream();
-    const audioTracks = inputStreamRef.current.getAudioTracks();
-    audioTracks.forEach(function (track) {
-      audioStream.addTrack(track);
-    });
+    // const audioStream = new MediaStream();
+    // const audioTracks = inputStreamRef.current.getAudioTracks();
+    // audioTracks.forEach(function (track) {
+    //   audioStream.addTrack(track);
+    // });
 
-    const outputStream = new MediaStream();
-    [audioStream, videoOutputStream].forEach(function (s) {
-      s.getTracks().forEach(function (t) {
-        outputStream.addTrack(t);
-      });
-    });
+    // const outputStream = new MediaStream();
+    // [audioStream, videoOutputStream].forEach(function (s) {
+    //   s.getTracks().forEach(function (t) {
+    //     outputStream.addTrack(t);
+    //   });
+    // });
 
-    mediaRecorderRef.current = new MediaRecorder(outputStream, {
+    // mediaRecorderRef.current = new MediaRecorder(outputStream, {
+    //   mimeType: "video/webm",
+    //   // videoBitsPerSecond: 3000000,
+    // });
+
+    mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
       mimeType: "video/webm",
-      // videoBitsPerSecond: 3000000,
     });
+
     mediaRecorderRef.current.addEventListener("dataavailable", (e) => {
       wsRef.current.send(e.data);
     });
@@ -211,13 +226,18 @@ export default function StartStream({ metamaskProvider }) {
 
       <div className="relative bg-event bg-cover bg-center rounded-xl w-2/3  m-auto">
         <div>
-          <video
+          {/* <video
             ref={videoRef}
             muted
             playsInline
             className="rounded-xl w-full h-full"
+          /> */}
+          <Webcam
+            className="rounded-xl w-full h-full"
+            audio={true}
+            ref={webcamRef}
           />
-          <canvas ref={canvasRef} hidden></canvas>
+          {/* <canvas ref={canvasRef} hidden></canvas> */}
         </div>
 
         {loading ? (

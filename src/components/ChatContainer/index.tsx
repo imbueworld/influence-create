@@ -4,6 +4,7 @@ import Draggable from "react-draggable";
 import Message from "./Message";
 import { v4 as uuidv4 } from "uuid";
 import sendIcon from "./send.svg";
+import closeIcon from "./close.svg";
 export default function ChatContainer({ username, room, handler }) {
   const chatServerURL = "https://imbue-chat-server.herokuapp.com";
   const [messages, setMessage] = useState([]);
@@ -77,25 +78,13 @@ export default function ChatContainer({ username, room, handler }) {
       >
         <div className="row-start-1 row-end-2">
           <button className="float-right" onClick={leaveChat}>
-            <svg
-              width="22"
-              height="22"
-              viewBox="0 0 22 22"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M11 21C16.5228 21 21 16.5228 21 11C21 5.47715 16.5228 1 11 1C5.47715 1 1 5.47715 1 11C1 16.5228 5.47715 21 11 21Z"
-                stroke="black"
-                strokeWidth="2"
-              />
-            </svg>
+            <img src={closeIcon} alt="Send" />
           </button>
         </div>
 
         <section
           ref={chatroom}
-          className="row-start-3 row-end-6 my-3 p-3"
+          className="row-start-3 row-end-9 my-3 p-3"
           style={{ overflowY: "auto" }}
         >
           {messages.map((m) => (
@@ -108,7 +97,7 @@ export default function ChatContainer({ username, room, handler }) {
           <section ref={feedback}></section>
         </section>
         <form
-          className="row-start-7 row-end-11 bottom-0 flex flex-row rounded-xl bg-white p-2 "
+          className="row-span-2 max-h-14 row-end-12 bottom-0 flex flex-row rounded-xl bg-white p-2 "
           onSubmit={sendMessage}
         >
           <input

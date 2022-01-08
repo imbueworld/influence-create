@@ -63,39 +63,25 @@ export default function EventItem({ event, metamaskProvider }) {
     const streamArray = streamData.split("&&");
 
     setLoading(true);
-    if (isCreator) {
-      getStreamStatus(streamArray[0])
-        .then(() => {
-          setLoading(false);
-        })
-        .catch((err) => {
-          if (err.toString().endsWith(500)) {
-            setDeleted(true);
-            setLoading(false);
-          }
-        });
 
-      return;
+    async function fetchData() {
+      if (isCreator) {
+        await getStreamStatus(streamArray[0]); //to verify event is deleted from livepeer
+        setLoading(false);
+        return;
+      }
+
+      const contract = await getContract(metamaskProvider);
+      const purchased = await contract.isPurchased(BigNumber.from(eventId));
+      setIsPurchased(purchased);
+      const isActive = (await getStreamStatus(streamArray[0])).data.isActive;
+      setIsActive(isActive);
+      setLoading(false);
     }
-
-    getContract(metamaskProvider).then((contract) => {
-      contract
-        .isPurchased(BigNumber.from(eventId))
-        .then((purchased) => {
-          setIsPurchased(purchased);
-
-          getStreamStatus(streamArray[0])
-            .then((res) => {
-              setIsActive(Boolean(res.data.isActive));
-              setLoading(false);
-            })
-            .catch((err) => {
-              if (err.toString().endsWith(500)) {
-                setDeleted(true);
-              }
-            });
-        })
-        .catch((err) => console.error(err));
+    fetchData().catch((err) => {
+      if (err.toString().endsWith(500)) {
+        setDeleted(true);
+      }
     });
   }, []);
   function handleStartStream() {

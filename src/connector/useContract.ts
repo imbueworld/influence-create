@@ -812,7 +812,6 @@ export const isContractDeployed = (chainId) => {
 };
 
 export async function getContract(metamaskProvider) {
-  if (!metamaskProvider) return;
   provider = new ethers.providers.Web3Provider(metamaskProvider, "any");
   let contract_address = "0x0";
   let chainId;

@@ -4,7 +4,6 @@ import { getNetwork } from "../../utils/addCustomNetwork";
 import { useNavigate } from "react-router-dom";
 let provider;
 
-declare let window: any;
 export default function Wallet({ metamaskProvider }) {
   const [address, setAddress] = useState("");
   const [balance, setBalance] = useState("");
@@ -24,7 +23,6 @@ export default function Wallet({ metamaskProvider }) {
       handleChainChanged(hexString);
     }
     provider = new ethers.providers.Web3Provider(metamaskProvider, "any");
-    // provider.networkPromise.then((network) => clg);
     metamaskProvider
       .request({ method: "eth_accounts" })
       .then(handleAccountsChanged)
@@ -56,7 +54,9 @@ export default function Wallet({ metamaskProvider }) {
         })
         .catch((err) => console.error(err));
       setAddress(`${accounts[0].slice(0, 5)}...${accounts[0].slice(-4)}`);
-    } else setAddress(accounts[0]);
+    } else {
+      navigate("/");
+    }
     localStorage.setItem("address", accounts[0]);
   }
   return (

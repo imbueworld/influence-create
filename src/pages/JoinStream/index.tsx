@@ -10,6 +10,7 @@ import Header from "../../components/Header";
 import EventDescription from "../../components/EventDescription";
 import { BeatLoader } from "react-spinners";
 import ChatContainer from "../../components/ChatContainer";
+import { _fetchData } from "ethers/lib/utils";
 export default function JoinStream({ metamaskProvider }) {
   const { eventId } = useParams();
 
@@ -22,7 +23,8 @@ export default function JoinStream({ metamaskProvider }) {
   const [chatting, setChatting] = useState(false);
   const [streamId, setStreamId] = useState(null);
 
-  const playerRef = useRef();
+  const timer = useRef(null);
+  const playerRef = useRef(null);
   const navigate = useNavigate();
   useEffect(() => {
     async function fetchData() {
@@ -44,18 +46,41 @@ export default function JoinStream({ metamaskProvider }) {
       const streamArray = streamData.split("&&");
       setStreamId(streamArray[0]);
       const playbackId = streamArray[2];
-      const isActive = (await getStreamStatus(streamArray[0])).data.isActive;
       setPlaybackURL(`https://cdn.livepeer.com/hls/${playbackId}/index.m3u8`);
-
-      setIsActive(isActive);
       setLoading(false);
     }
     fetchData().catch((err) => console.error(err));
   }, []);
 
+  useEffect(() => {});
+
+  useEffect(() => {
+    if (streamId)
+      timer.current = window.setInterval(checkLiveStreamStatus, 5000);
+
+    return function cleanup() {
+      window.clearInterval(timer.current);
+    };
+  }, [streamId]);
+
+  function checkLiveStreamStatus() {
+    getStreamStatus(streamId)
+      .then((res) => {
+        setIsActive(res.data.isActive);
+      })
+      .catch((err) => {
+        if (err.toString().endsWith("status code 500")) {
+          alert("Event ended");
+          navigate("/");
+          window.clearInterval(timer.current);
+        }
+      });
+  }
+
   function handleChat(e) {
     // setChatting(e);
   }
+
   return (
     <>
       <Header metamaskProvider={metamaskProvider} />
@@ -77,17 +102,14 @@ export default function JoinStream({ metamaskProvider }) {
           />
         ) : (
           <div className="w-full h-full m-auto pt-[56.25%] relative">
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-red-700">
-              This event doesn`t started now.
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-red-700 bg-white opacity-50 rounded-xl">
+              This event isn`t started now.
               <br />
-              Please try it again.
+              This will be removed when event is started.
             </div>
           </div>
         )}
         <div className="absolute top-[90%] w-full left-1/2 transform -translate-x-1/2 -translate-y-1/2 grid grid-cols-6 items-center">
-          <div className="col-start-2 col-span-4">
-            <ColoredButton disabled={!isActive}>START</ColoredButton>
-          </div>
           <div className="col-end-7 col-span-1">
             <button onClick={handleChat}>
               <svg

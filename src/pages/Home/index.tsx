@@ -23,9 +23,6 @@ export default function Home({ metamaskProvider }) {
     }
 
     metamaskProvider.on("accountsChanged", handleAccountsChanged);
-    // metamaskProvider.on("chainChanged", (_chainId) =>
-    //   handleChangeNetWork(_chainId)
-    // );
 
     getContract(metamaskProvider).then((contract) => {
       contract.on("eventAdded", (creator) => {
@@ -41,19 +38,12 @@ export default function Home({ metamaskProvider }) {
       });
   }, []);
 
-  // function handleChangeNetWork(chainId) {
-  //   console.log("chainId:" + chainId);
-  // }
-
   function handleAccountsChanged(accounts) {
     if (accounts[0]) {
       setLoading(true);
       setAddress(accounts[0]);
       handleGetEvents(accounts[0]);
-    } else {
-      setAddress(null);
     }
-    // setLoading(false);
   }
 
   function handleConnectWallet() {
@@ -67,7 +57,7 @@ export default function Home({ metamaskProvider }) {
       .then(handleAccountsChanged)
       .catch((error) => {
         if (error.code === 4001) {
-          console.log("Please connect to MetaMask.");
+          alert("Please connect to MetaMask.");
         } else {
           console.error(error);
         }
@@ -82,7 +72,7 @@ export default function Home({ metamaskProvider }) {
           setEvents(events);
           setLoading(false);
         })
-        .catch(console.error);
+        .catch();
     });
   }
 
