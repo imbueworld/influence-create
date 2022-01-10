@@ -36,12 +36,12 @@ export default function StartStream({ metamaskProvider }) {
   const mediaRecorderRef = useRef(null);
   const timer = useRef(null);
 
-  // const inputStreamRef = useRef(null);
-  // const videoRef = useRef(null);
+  const inputStreamRef = useRef(null);
+  const videoRef = useRef(null);
   // const canvasRef = useRef(null);
   // const requestAnimationRef = useRef(null);
 
-  const webcamRef = useRef(null);
+  // const webcamRef = useRef(null);
   const nameRef = useRef();
   const navigate = useNavigate();
 
@@ -81,8 +81,6 @@ export default function StartStream({ metamaskProvider }) {
   }
 
   const enableCamera = async () => {
-    await window.navigator.mediaDevices.getUserMedia(CAMERA_CONSTRAINTS);
-    /*
     inputStreamRef.current = await window.navigator.mediaDevices.getUserMedia(
       CAMERA_CONSTRAINTS
     );
@@ -90,43 +88,9 @@ export default function StartStream({ metamaskProvider }) {
 
     await videoRef.current.play();
 
-    // We need to set the canvas height/width to match the video element.
-    canvasRef.current.height = videoRef.current.clientHeight;
-    canvasRef.current.width = videoRef.current.clientWidth;
-
-    requestAnimationRef.current = requestAnimationFrame(updateCanvas);
-*/
     setCameraEnabled(true);
   };
 
-  /*
-  const updateCanvas = () => {
-    if (
-      canvasRef.current === null ||
-      videoRef.current === null ||
-      videoRef.current.ended ||
-      videoRef.current.paused
-    ) {
-      return;
-    }
-
-    const ctx = canvasRef.current.getContext("2d");
-
-    ctx.drawImage(
-      videoRef.current,
-      0,
-      0,
-      videoRef.current.clientWidth,
-      videoRef.current.clientHeight
-    );
-
-    ctx.fillStyle = "#FB3C4E";
-    ctx.font = "50px Akkurat";
-    ctx.fillText(nameRef.current, 10, 50, canvasRef.current.width - 20);
-
-    requestAnimationRef.current = requestAnimationFrame(updateCanvas);
-  };
-*/
   function handleStartStreaming() {
     const wsUrl = `${livepeer.webSocketServerURL}/rtmp?key=${streamKey}`;
 
@@ -149,28 +113,24 @@ export default function StartStream({ metamaskProvider }) {
       stopStreaming();
     });
 
-    // const videoOutputStream = canvasRef.current.captureStream(24); // 24 FPS
+    const videoOutputStream = videoRef.current.captureStream();
 
-    // const audioStream = new MediaStream();
-    // const audioTracks = inputStreamRef.current.getAudioTracks();
-    // audioTracks.forEach(function (track) {
-    //   audioStream.addTrack(track);
-    // });
+    const audioStream = new MediaStream();
+    const audioTracks = inputStreamRef.current.getAudioTracks();
+    audioTracks.forEach(function (track) {
+      audioStream.addTrack(track);
+    });
 
-    // const outputStream = new MediaStream();
-    // [audioStream, videoOutputStream].forEach(function (s) {
-    //   s.getTracks().forEach(function (t) {
-    //     outputStream.addTrack(t);
-    //   });
-    // });
+    const outputStream = new MediaStream();
+    [audioStream, videoOutputStream].forEach(function (s) {
+      s.getTracks().forEach(function (t) {
+        outputStream.addTrack(t);
+      });
+    });
 
-    // mediaRecorderRef.current = new MediaRecorder(outputStream, {
-    //   mimeType: "video/webm",
-    //   // videoBitsPerSecond: 3000000,
-    // });
-
-    mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
+    mediaRecorderRef.current = new MediaRecorder(outputStream, {
       mimeType: "video/webm",
+      // videoBitsPerSecond: 3000000,
     });
 
     mediaRecorderRef.current.addEventListener("dataavailable", (e) => {
@@ -207,47 +167,46 @@ export default function StartStream({ metamaskProvider }) {
   return (
     <>
       <Header metamaskProvider={metamaskProvider} />
-      <div className="my-5">
+      <div className='my-5'>
         {event && event._index ? (
           <a
             href={`${window.location.protocol}//${window.location.host}/#/join-stream/${event._index}`}
-            target="_blank"
-            rel="noreferrer"
-            className="font-sans text-2xl font-bold text-red-700"
-          >
+            target='_blank'
+            rel='noreferrer'
+            className='font-sans text-2xl font-bold text-red-700'>
             {`${window.location.protocol}//${window.location.host}/#/join-stream/${event._index}`}
           </a>
         ) : null}
       </div>
 
       {connectedToLive ? (
-        <div className="my-3 text-blue-700">Connected to Livepeer.</div>
+        <div className='my-3 text-blue-700'>Connected to Livepeer.</div>
       ) : null}
 
-      <div className="relative bg-event bg-cover bg-center rounded-xl w-2/3  m-auto">
+      <div className='relative bg-event bg-cover bg-center rounded-xl w-2/3  m-auto'>
         <div>
-          {/* <video
+          <video
             ref={videoRef}
             muted
             playsInline
-            className="rounded-xl w-full h-full"
-          /> */}
-          <Webcam
-            className="rounded-xl w-full h-full"
+            className='rounded-xl w-full h-full'
+          />
+          {/* <Webcam
+            className='rounded-xl w-full h-full'
             audio={true}
             ref={webcamRef}
-          />
+          /> */}
           {/* <canvas ref={canvasRef} hidden></canvas> */}
         </div>
 
         {loading ? (
-          <div className="absolute w-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          <div className='absolute w-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
             <BeatLoader loading={loading} />
           </div>
         ) : (
           <>
-            <div className="absolute w-full top-[90%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 grid grid-cols-6 items-center">
-              <div className="col-start-2 col-span-4">
+            <div className='absolute w-full top-[90%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 grid grid-cols-6 items-center'>
+              <div className='col-start-2 col-span-4'>
                 {isDeleting ? (
                   <BeatLoader loading={isDeleting} />
                 ) : streaming ? (
@@ -257,25 +216,23 @@ export default function StartStream({ metamaskProvider }) {
                 ) : (
                   <ColoredButton
                     onClick={handleStartStreaming}
-                    disabled={!cameraEnabled}
-                  >
+                    disabled={!cameraEnabled}>
                     START STREAM
                   </ColoredButton>
                 )}
               </div>
-              <div className="col-end-7 col-span-1">
+              <div className='col-end-7 col-span-1'>
                 {isDeleting ? null : (
                   <button onClick={handleChat}>
                     <svg
-                      width="37"
-                      height="35"
-                      viewBox="0 0 37 35"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
+                      width='37'
+                      height='35'
+                      viewBox='0 0 37 35'
+                      fill='none'
+                      xmlns='http://www.w3.org/2000/svg'>
                       <path
-                        d="M18.5 32.6875C28.7166 32.6875 37 25.4401 37 16.5C37 7.55988 28.7166 0.3125 18.5 0.3125C8.28337 0.3125 0 7.55988 0 16.5C0 20.57 1.71819 24.2931 4.55562 27.1375C4.33131 29.487 3.59131 32.0631 2.77269 33.9964C2.59 34.4265 2.94381 34.9075 3.404 34.8335C8.621 33.9779 11.7221 32.6644 13.0702 31.9799C14.8414 32.4523 16.6669 32.6902 18.5 32.6875Z"
-                        fill="#FFE6EB"
+                        d='M18.5 32.6875C28.7166 32.6875 37 25.4401 37 16.5C37 7.55988 28.7166 0.3125 18.5 0.3125C8.28337 0.3125 0 7.55988 0 16.5C0 20.57 1.71819 24.2931 4.55562 27.1375C4.33131 29.487 3.59131 32.0631 2.77269 33.9964C2.59 34.4265 2.94381 34.9075 3.404 34.8335C8.621 33.9779 11.7221 32.6644 13.0702 31.9799C14.8414 32.4523 16.6669 32.6902 18.5 32.6875Z'
+                        fill='#FFE6EB'
                       />
                     </svg>
                   </button>
@@ -293,7 +250,7 @@ export default function StartStream({ metamaskProvider }) {
         )}
       </div>
 
-      <EventDescription event={event} stylec="w-3/4 mx-auto" />
+      <EventDescription event={event} stylec='w-3/4 mx-auto' />
     </>
   );
 }
