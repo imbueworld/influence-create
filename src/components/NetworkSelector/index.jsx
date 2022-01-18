@@ -5,7 +5,7 @@ import Optimistic from "./optimistic.svg";
 import Harmony from "./harmony.svg";
 import { useNavigate } from "react-router-dom";
 import { BigNumber } from "ethers";
-import { isContractDeployed } from "../../connector/useContract";
+import { isContractDeployed } from "../../web3/useContract";
 import { ethers } from "ethers";
 export default function NetworkSelector({ metamaskProvider }) {
   const data = [
@@ -28,6 +28,26 @@ export default function NetworkSelector({ metamaskProvider }) {
       value: "0x63564C40",
       text: "Harmony",
       icon: <img src={Harmony} width="45" height="45" alt=""></img>,
+    }, ///Added 01/18/2022
+    {
+      value: "0x66EEB",
+      text: "Arbitrum Testnet",
+      icon: <img src={Optimistic} width="45" height="45" alt=""></img>,
+    },
+    {
+      value: "0xA4B1",
+      text: "Arbitrum",
+      icon: <img src={Optimistic} width="45" height="45" alt=""></img>,
+    },
+    {
+      value: "0x13881",
+      text: "Polygon Testnet",
+      icon: <img src={Harmony} width="45" height="45" alt=""></img>,
+    },
+    {
+      value: "0x89",
+      text: "Polygon",
+      icon: <img src={Harmony} width="45" height="45" alt=""></img>,
     },
   ];
 
@@ -39,16 +59,27 @@ export default function NetworkSelector({ metamaskProvider }) {
     metamaskProvider.on("chainChanged", (_chainId) => setNetwork(_chainId));
 
     const provider = new ethers.providers.Web3Provider(metamaskProvider, "any");
+
     provider._networkPromise.then((network) => {
-      setNetwork(network.chainId);
+      data.forEach((option) => {
+        if (BigNumber.from(network.chainId).eq(BigNumber.from(option.value))) {
+          setSelectedOption(option);
+          return;
+        }
+      });
     });
+    return function cleanup() {
+      metamaskProvider.removeListener("chainChanged", (_chainId) =>
+        setNetwork(_chainId)
+      );
+    };
   }, []);
 
   const setNetwork = (chainId) => {
     data.forEach((option) => {
       if (BigNumber.from(option.value).eq(BigNumber.from(chainId))) {
         setSelectedOption(option);
-        // window.location.reload();
+        window.location.reload();
       }
     });
   };
@@ -63,6 +94,7 @@ export default function NetworkSelector({ metamaskProvider }) {
 
     switchNetwork(metamaskProvider, e.value)
       .then(() => {
+        console.log(window.location.href.endsWith("wrong-network"));
         if (window.location.href.endsWith("wrong-network")) {
           navigate("/");
           return;
@@ -70,7 +102,7 @@ export default function NetworkSelector({ metamaskProvider }) {
           window.location.reload();
           return;
         }
-        setSelectedOption(e);
+        // setSelectedOption(e);
       })
       .catch((err) => {
         if (err.code === 4001) {

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import moment from "moment";
 import { BigNumber } from "ethers";
 import { BarLoader } from "react-spinners";
 
-import { getContract } from "../../connector/useContract";
+import { useContract } from "../../web3/useContract";
 
 import EventItem from "../../components/EventItem";
 import Header from "../../components/Header";
@@ -14,9 +13,10 @@ export default function ListEvent({ metamaskProvider }) {
   // const [contract, setContract] = useState(null);
   const [events, setEvents] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { getContract } = useContract();
   useEffect(() => {
     handleGetAvailableEvents();
-    getContract(metamaskProvider).then((con) => {
+    getContract().then((con) => {
       con.on("eventAdded", (creator) => {
         console.log(creator + " created");
         handleGetAvailableEvents();
@@ -29,7 +29,7 @@ export default function ListEvent({ metamaskProvider }) {
 
   function handleGetAvailableEvents() {
     setLoading(true);
-    getContract(metamaskProvider).then((contract) => {
+    getContract().then((contract) => {
       contract
         .getUpcomingEvents(
           "0x0000000000000000000000000000000000000000",

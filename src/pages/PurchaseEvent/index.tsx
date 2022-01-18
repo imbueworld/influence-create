@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import ColoredButton from "../../components/ColoredButton";
 import EventDescription from "../../components/EventDescription";
 import Header from "../../components/Header";
-import { getContract } from "../../connector/useContract";
+import { useContract } from "../../web3/useContract";
 import { BeatLoader } from "react-spinners";
 
 export default function PurchaseEvent({ metamaskProvider }) {
@@ -13,10 +13,11 @@ export default function PurchaseEvent({ metamaskProvider }) {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const { getContract } = useContract();
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
-      const contract = await getContract(metamaskProvider);
+      const contract = await getContract();
       const event = await contract._events(BigNumber.from(eventId));
       setEvent(event);
       const purchased = await contract.isPurchased(BigNumber.from(eventId));
@@ -42,7 +43,7 @@ export default function PurchaseEvent({ metamaskProvider }) {
       gasLimit: 90000,
     };
 
-    getContract(metamaskProvider).then((contract) => {
+    getContract().then((contract) => {
       contract
         .addPerson(BigNumber.from(eventId), overrides)
         .then((res) => {

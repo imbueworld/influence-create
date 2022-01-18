@@ -16,6 +16,7 @@ export default function ChatContainer({ username, room, handler }) {
 
   useEffect(() => {
     async function fetchData() {
+      console.log(socket.current);
       socket.current = await io(chatServerURL);
       //On new message
       socket.current.on("message", (data) => {
@@ -74,19 +75,17 @@ export default function ChatContainer({ username, room, handler }) {
     <Draggable nodeRef={container}>
       <div
         ref={container}
-        className="absolute right-2 bottom-2 p-4 m-5 rounded-xl w-1/3 h-4/5 bg-[#DEFCFC] font-sans grid grid-rows-11"
-      >
-        <div className="row-start-1 row-end-2">
-          <button className="float-right" onClick={leaveChat}>
-            <img src={closeIcon} alt="Send" />
+        className='absolute right-2 bottom-2 p-4 m-5 rounded-xl w-1/3 h-4/5 bg-[#DEFCFC] font-sans grid grid-rows-8'>
+        <div className='row-start-1 row-span-1'>
+          <button className='float-right' onClick={leaveChat}>
+            <img src={closeIcon} alt='Send' />
           </button>
         </div>
 
         <section
           ref={chatroom}
-          className="row-start-3 row-end-9 my-3 p-3"
-          style={{ overflowY: "auto" }}
-        >
+          className='row-start-2 row-span-6 my-3 p-3'
+          style={{ overflowY: "auto" }}>
           {messages.map((m) => (
             <Message
               key={uuidv4()}
@@ -97,24 +96,21 @@ export default function ChatContainer({ username, room, handler }) {
           <section ref={feedback}></section>
         </section>
         <form
-          className="row-span-2 max-h-14 row-end-12 bottom-0 flex flex-row rounded-xl bg-white p-2 "
-          onSubmit={sendMessage}
-        >
+          className='row-end-9 row-span-1  max-h-14  bottom-0 flex flex-row rounded-xl bg-white p-2 '
+          onSubmit={sendMessage}>
           <input
-            type="text"
-            autoComplete="false"
-            name="message"
-            className="w-4/5 pr-2 outline-0"
+            type='text'
+            autoComplete='false'
+            name='message'
+            className='w-4/5 pr-2 outline-0'
             value={messageToSend}
             onChange={onTypingMessage}
-            id="message"
-          ></input>
+            id='message'></input>
           <button
-            className="bg-[#FFE6EB] p-2 rounded-3xl"
-            type="submit"
-            onClick={sendMessage}
-          >
-            <img src={sendIcon} alt="Send" />
+            className='bg-[#FFE6EB] p-2 rounded-3xl'
+            type='submit'
+            onClick={sendMessage}>
+            <img src={sendIcon} alt='Send' />
           </button>
         </form>
       </div>

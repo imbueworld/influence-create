@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { BigNumber, ethers } from "ethers";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
-import { getContract } from "../../connector/useContract";
+import { useContract } from "../../web3/useContract";
 import ColoredButton from "../../components/ColoredButton";
 import { livepeer } from "../../utils/livepeer";
 import axios from "axios";
@@ -42,24 +42,26 @@ export default function CreateEvent({ metamaskProvider }) {
   ];
   // const contract = getContract(metamaskProvider);
   const navigate = useNavigate();
+  const { getContract } = useContract();
   const [loading, setLoading] = useState(false);
   const [paid, setPaid] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     desc: "",
-    start_date: "",
+    start_date: moment(Date.now()).format("yyyy-MM-DDTHH:mm"),
     duration: durationData[0],
     price: "0",
   });
 
   const { name, desc, start_date, price } = formData;
   const onChange = (e) => {
+    console.log(e.target.value);
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
   const setDuration = (e) => {
     setFormData({ ...formData, ["duration"]: e });
   };
-  function handleCreateEvent(e) {
+  async function handleCreateEvent(e) {
     e.preventDefault();
     setLoading(true);
 
@@ -67,10 +69,10 @@ export default function CreateEvent({ metamaskProvider }) {
     const priceInwei = ethers.utils.parseEther(priceInETH.toString());
     const { apiKey, proxyURL, streamProfiles } = livepeer;
     const authorizationHeader = `Bearer ${apiKey}`;
-    const streamName =
-      name + "_" + moment(start_date).format("YYYY-MM-DD H:mm:ss");
+    const streamName = name + "_" + start_date;
+
     try {
-      const createStreamResponse = axios.post(
+      const result = await axios.post(
         proxyURL,
         {
           name: streamName,
@@ -83,43 +85,32 @@ export default function CreateEvent({ metamaskProvider }) {
           },
         }
       );
-      createStreamResponse.then((result) => {
-        if (result && result.data) {
-          const { id, streamKey, playbackId } = result.data;
-          let streamData =
-            id + "&&" + streamKey + "&&" + playbackId + "&&" + apiKey;
-          streamData = CryptoJS.AES.encrypt(streamData, name).toString();
-          // const price = ethers.utils.parseEther(priceInWei);
-
-          getContract(metamaskProvider).then((contract) => {
-            contract
-              .addEvent(
-                name,
-                BigNumber.from(new Date(start_date).getTime()),
-                BigNumber.from(formData.duration.value),
-                desc,
-                priceInwei,
-                streamData
-              )
-              .then((res) => {
-                res.wait().then((res) => {
-                  if (res.status) {
-                    alert("Event created successfully");
-                    navigate("/");
-                  }
-                });
-              })
-              .catch((err) => {
-                if ((err.code = 4001)) {
-                  setLoading(false);
-                  alert(err.message);
-                }
-              });
-          });
+      if (result && result.data) {
+        const { id, streamKey, playbackId } = result.data;
+        let streamData =
+          id + "&&" + streamKey + "&&" + playbackId + "&&" + apiKey;
+        streamData = CryptoJS.AES.encrypt(streamData, name).toString();
+        const contract = await getContract();
+        const pendingAddEvent = await contract.addEvent(
+          name,
+          BigNumber.from(new Date(start_date).getTime()),
+          BigNumber.from(formData.duration.value),
+          desc,
+          priceInwei,
+          streamData
+        );
+        const res = await pendingAddEvent.wait();
+        if (res.status) {
+          alert("Event created successfully");
+          navigate("/");
         }
-      });
+      }
     } catch (err) {
       // Handles Invalid Stream Id error
+      if ((err.code = 4001)) {
+        setLoading(false);
+        alert(err.message);
+      }
       if (err.response.status === 403) {
         console.log("error 403");
       }
@@ -132,15 +123,18 @@ export default function CreateEvent({ metamaskProvider }) {
       <Header metamaskProvider={metamaskProvider} />
 
       <form
-        className="grid grid-rows-4 gap-2 font-sans w-1/2 items-center text-center m-auto"
+        className="grid grid-rows-4 gap-2 font-sans xl:w-1/2 md:p-0 sm:p-10 p-14 items-center text-center m-auto"
         onSubmit={handleCreateEvent}
       >
-        <div className="text-3xl font-Lulo my-3">CREATE EVENT</div>
+        <div className="md:text-3xl sm:text-2xl text-xl font-Lulo my-3">
+          CREATE EVENT
+        </div>
         <input
           className="bg-transparent border-b focus:outline-none border-black text-center"
           type="text"
           name="name"
           id="name"
+          value={formData.name}
           placeholder="EVENT NAME"
           onChange={onChange}
           required
@@ -151,6 +145,7 @@ export default function CreateEvent({ metamaskProvider }) {
             type="datetime-local"
             name="start_date"
             id="date"
+            value={formData.start_date}
             placeholder="SELECT DATE/TIME"
             onChange={onChange}
             required
@@ -170,6 +165,7 @@ export default function CreateEvent({ metamaskProvider }) {
           type="text"
           name="desc"
           id="desc"
+          value={formData.desc}
           placeholder="EVENT DESCRIPTION"
           onChange={onChange}
         />

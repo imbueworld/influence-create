@@ -1,5 +1,5 @@
 const carrabreApi = "9ab2a15c-f802-4800-855b-18687b4026f1";
-const myApi = "7836fafd-0c7d-4350-89f8-0b3b481aef6d";
+// const myApi = "7836fafd-0c7d-4350-89f8-0b3b481aef6d";
 const apiKey = carrabreApi;
 const streamName = "IMBUE Test Stream";
 const webSocketServerURL = "wss://infuluence-proxy.herokuapp.com";

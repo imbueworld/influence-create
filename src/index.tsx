@@ -4,9 +4,32 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import detectEthereumProvider from "@metamask/detect-provider";
-
+import WalletConnectProvider from "@walletconnect/ethereum-provider";
+import { isMobile } from "react-device-detect";
 async function startApp() {
-  let metamaskProvider = await detectEthereumProvider();
+  // let isMobile = true;
+  let metamaskProvider;
+  // if (isMobile) {
+  //   metamaskProvider = new WalletConnectProvider({
+  //     rpc: {
+  //       [1]: "https://mainnet.infura.io/v3/ce3c71b85fea4d3db649667cd1fe1c6d",
+  //     },
+  //     qrcodeModalOptions: {
+  //       mobileLinks: [
+  //         // "rainbow",
+  //         "metamask",
+  //         // "argent",
+  //         // "trust",
+  //         // "imtoken",
+  //         // "pillar",
+  //       ],
+  //       desktopLinks: ["encrypted ink"],
+  //     },
+  //   });
+  //   await metamaskProvider.enable().catch((error: any) => console.log(error));
+  // } else {
+  metamaskProvider = await detectEthereumProvider();
+  // }
   ReactDOM.render(
     <React.StrictMode>
       <App metamaskProvider={metamaskProvider} />

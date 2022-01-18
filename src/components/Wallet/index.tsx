@@ -57,7 +57,6 @@ export default function Wallet({ metamaskProvider }) {
     } else {
       navigate("/");
     }
-    localStorage.setItem("address", accounts[0]);
   }
   return (
     <>

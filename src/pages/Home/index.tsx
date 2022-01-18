@@ -1,20 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { RotateLoader } from "react-spinners";
-import moment from "moment";
+import { BeatLoader } from "react-spinners";
 import { BigNumber } from "ethers";
 
 import Header from "../../components/Header";
 import EventItem from "../../components/EventItem";
 import ColoredButton from "../../components/ColoredButton";
 
-import { getContract } from "../../connector/useContract";
+import { useContract } from "../../web3/useContract";
+import WalletSelector from "../../components/WalletSelector";
+import { useProvider } from "../../web3/useProvider";
 
 export default function Home({ metamaskProvider }) {
   const [loading, setLoading] = useState(false);
   const [events, setEvents] = useState(null);
   const [address, setAddress] = useState(null);
   const [installedMetamask, setInstalledMetamask] = useState(true);
+
+  const { setProvider, getProvider, connectWallet, getAccounts, isConnected } =
+    useProvider();
+  const { getContract } = useContract();
   const navigate = useNavigate();
   useEffect(() => {
     if (!metamaskProvider) {
@@ -22,39 +27,41 @@ export default function Home({ metamaskProvider }) {
       return;
     }
 
-    metamaskProvider.on("accountsChanged", handleAccountsChanged);
-
-    getContract(metamaskProvider).then((contract) => {
+    getContract().then((contract) => {
       contract.on("eventAdded", (creator) => {
         console.log(creator + " created");
         if (address) handleGetEvents(address);
       });
     });
-    metamaskProvider
-      .request({ method: "eth_accounts" })
-      .then(handleAccountsChanged)
-      .catch((err) => {
-        console.error(err);
-      });
+    if (isConnected)
+      getAccounts().then((accounts) => handleAccountChanged(accounts[0]));
   }, []);
 
-  function handleAccountsChanged(accounts) {
-    if (accounts[0]) {
+  function handleAccountChanged(account) {
+    if (account) {
       setLoading(true);
-      setAddress(accounts[0]);
-      handleGetEvents(accounts[0]);
+      setAddress(account);
+      handleGetEvents(account);
     }
   }
 
-  function handleConnectWallet() {
-    if (!metamaskProvider) {
-      alert("Please install metamask!");
-      return;
-    }
+  async function handleConnectMetamask() {
+    await setProvider(true);
+    await connectWallet()
+      .then(handleAccountChanged)
+      .catch((error) => {
+        if (error.code === 4001) {
+          alert("Please connect to MetaMask.");
+        } else {
+          console.error(error);
+        }
+      });
+  }
 
-    metamaskProvider
-      .request({ method: "eth_requestAccounts" })
-      .then(handleAccountsChanged)
+  async function handleConnectWallet() {
+    await setProvider(false);
+    await connectWallet()
+      .then(handleAccountChanged)
       .catch((error) => {
         if (error.code === 4001) {
           alert("Please connect to MetaMask.");
@@ -65,7 +72,7 @@ export default function Home({ metamaskProvider }) {
   }
 
   function handleGetEvents(walletAddress) {
-    getContract(metamaskProvider).then((contract) => {
+    getContract().then((contract) => {
       contract
         .getUpcomingEvents(walletAddress, BigNumber.from(Date.now())) //
         .then((events) => {
@@ -86,7 +93,7 @@ export default function Home({ metamaskProvider }) {
 
   const homeData = address ? (
     <>
-      <div className="text-3xl mb-3">
+      <div className="md:text-3xl sm:text-2xl text-xl mb-3">
         UPCOMING
         <br />
         EVENTS
@@ -124,12 +131,10 @@ export default function Home({ metamaskProvider }) {
         <br /> WALLET TO SIGN IN
       </div>
       <div className="items-center justify-center my-5">
-        <ColoredButton
-          disabled={!installedMetamask}
-          onClick={handleConnectWallet}
-        >
-          CONNECT WALLET
-        </ColoredButton>
+        <WalletSelector
+          handleConnectMetamask={handleConnectMetamask}
+          handleConnectWallet={handleConnectWallet}
+        />
         {installedMetamask ? null : (
           <div>
             Detect meatamask failed
@@ -152,7 +157,7 @@ export default function Home({ metamaskProvider }) {
     <>
       <Header metamaskProvider={metamaskProvider} />
       <div className="text-center m-auto">
-        {loading ? <RotateLoader loading={loading} /> : homeData}
+        {loading ? <BeatLoader loading={loading} /> : homeData}
       </div>
     </>
   );

@@ -34,7 +34,7 @@ const Harmony_Testnet_Shard_0 = {
     decimals: 18,
   },
   rpcUrls: ["https://api.s0.b.hmny.io"],
-  blockExplorerUrls: ["https://cointool.app"],
+  blockExplorerUrls: ["https://explorer.testnet.harmony.one/"],
 };
 const Harmony_Mainnet_Shard_0 = {
   chainId: "0x63564C40",
@@ -45,13 +45,62 @@ const Harmony_Mainnet_Shard_0 = {
     decimals: 18,
   },
   rpcUrls: ["https://api.harmony.one"],
-  blockExplorerUrls: ["https://cointool.app"],
+  blockExplorerUrls: ["https://explorer.harmony.one/"],
+};
+const Arbitrum_Testnet_Rinkeby = {
+  chainId: "0x66EEB",
+  chainName: "Arbitrum Testnet Rinkeby",
+  nativeCurrency: {
+    name: "Arbitrum ARETH",
+    symbol: "ARETH",
+    decimals: 18,
+  },
+  rpcUrls: ["https://rinkeby.arbitrum.io/rpc"],
+  blockExplorerUrls: ["https://testnet.arbiscan.io/"],
+};
+const Arbitrum_Mainnet = {
+  chainId: "0xA4B1",
+  chainName: "Arbitrum",
+  nativeCurrency: {
+    name: "Arbitrum ETH",
+    symbol: "ETH",
+    decimals: 18,
+  },
+  rpcUrls: ["https://arb1.arbitrum.io/rpc"],
+  blockExplorerUrls: ["https://arbiscan.io/"],
+};
+
+const Polygon_Testnet = {
+  chainId: "0x13881",
+  chainName: "Arbitrum Testnet Rinkeby",
+  nativeCurrency: {
+    name: "Polygon  MATIC",
+    symbol: "MATIC",
+    decimals: 18,
+  },
+  rpcUrls: ["https://rpc-mumbai.maticvigil.com/"],
+  blockExplorerUrls: ["https://mumbai.polygonscan.com/"],
+};
+const Polygon_Mainnet = {
+  chainId: "0x89",
+  chainName: "Matic",
+  nativeCurrency: {
+    name: "Matic  MATIC",
+    symbol: "MATIC",
+    decimals: 18,
+  },
+  rpcUrls: ["https://polygon-rpc.com/"],
+  blockExplorerUrls: ["https://polygonscan.com/"],
 };
 export const Networks = [
   Optimistic_Ethereum_Kovan,
   Optimistic_Ethereum,
   Harmony_Testnet_Shard_0,
   Harmony_Mainnet_Shard_0,
+  Arbitrum_Testnet_Rinkeby,
+  Arbitrum_Mainnet,
+  Polygon_Testnet,
+  Polygon_Mainnet,
 ];
 
 export const getNetwork = (chainId) => {

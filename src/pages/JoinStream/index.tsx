@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getContract } from "../../connector/useContract";
+import { useContract } from "../../web3/useContract";
 import { BigNumber } from "ethers";
 import { getStreamStatus } from "../../utils/apiFactory";
 import CryptoJS from "crypto-js";
 import ReactHlsPlayer from "react-hls-player";
-import ColoredButton from "../../components/ColoredButton";
 import Header from "../../components/Header";
 import EventDescription from "../../components/EventDescription";
 import { BeatLoader } from "react-spinners";
@@ -26,10 +25,11 @@ export default function JoinStream({ metamaskProvider }) {
   const timer = useRef(null);
   const playerRef = useRef(null);
   const navigate = useNavigate();
+  const { getContract } = useContract();
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
-      const contract = await getContract(metamaskProvider);
+      const contract = await getContract();
       const purchased = await contract.isPurchased(BigNumber.from(eventId));
 
       if (!purchased) {
@@ -78,7 +78,7 @@ export default function JoinStream({ metamaskProvider }) {
   }
 
   function handleChat(e) {
-    // setChatting(e);
+    setChatting(e);
   }
 
   return (
