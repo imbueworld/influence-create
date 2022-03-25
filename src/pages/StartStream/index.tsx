@@ -21,11 +21,14 @@ const CryptoJS = require("crypto-js");
 const CAMERA_CONSTRAINTS = {
   audio: true,
   video: true,
+  facingMode: "user"
 };
 export default function StartStream({ metamaskProvider }) {
   const { eventId } = useParams();
 
-
+const [cameraconst,setcameraConst] = useState({ audio: true,
+  video: true,
+  facingMode: "user"})
 
 
   const [event, setEvent] = useState(null);
@@ -265,7 +268,8 @@ export default function StartStream({ metamaskProvider }) {
           playsInline
           className="rounded-xl w-full h-full"
         /> */}
-<Webcam ref={webcamRef}   className="rounded-xl w-full h-full"/>
+        
+<Webcam ref={webcamRef}  videoConstraints={cameraconst}  className="rounded-xl w-full h-full"/>
         {loading ? (
           <div className="absolute w-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
             <BeatLoader loading={loading} />
@@ -302,19 +306,35 @@ export default function StartStream({ metamaskProvider }) {
                 {isDeleting ? (
                   <BeatLoader loading={isDeleting} />
                 ) : streaming ? (
+                  <>
                   <ColoredButton onClick={handleStopStreaming}>
                     STOP STREAM
                   </ColoredButton>
+                  {/* <button>Change-camera</button> */}
+                  </>
                 ) : (
+                  <>
                   <ColoredButton
                     onClick={handleStartStreaming}
                     disabled={!cameraEnabled}
                   >
                     START STREAM
                   </ColoredButton>
+                    <ColoredButton onClick={()=>{
+               
+
+
+
+setcameraConst((pre)=>pre.facingMode==="environment"?{audio: true,
+  video: true,
+  facingMode: "user"}: {audio: true,
+    video: true,
+    facingMode: "environment"})
+                    }}>Change-camera</ColoredButton>
+                    </>
                 )}
               </div>
-
+           
               <div className="col-end-7 col-span-1">
                 {isDeleting || chatting ? null : (
                   <button onClick={handleChat}>
