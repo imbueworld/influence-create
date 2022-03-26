@@ -12,14 +12,24 @@ import ChatContainer from "../../components/ChatContainer";
 import screenEnabledIcon from "./screen_enabled.svg";
 import screenDisabledIcon from "./screen_disabled.svg";
 import "./ReplaceableMediaStream";
+// import new
+
+import Webcam from "react-webcam";
 const CryptoJS = require("crypto-js");
+
 
 const CAMERA_CONSTRAINTS = {
   audio: true,
   video: true,
+  facingMode: "user"
 };
 export default function StartStream({ metamaskProvider }) {
   const { eventId } = useParams();
+
+const [cameraconst,setcameraConst] = useState({ audio: true,
+  video: true,
+  facingMode: "user"})
+
 
   const [event, setEvent] = useState(null);
   const [streaming, setStreaming] = useState(false);
@@ -34,6 +44,9 @@ export default function StartStream({ metamaskProvider }) {
   const [loading, setLoading] = useState(false);
   const walletAddress = metamaskProvider.selectedAddress;
 
+
+  const webcamRef = React.useRef(null);
+
   const wsRef = useRef(null);
   const mediaRecorderRef = useRef(null);
   const timer = useRef(null);
@@ -46,6 +59,9 @@ export default function StartStream({ metamaskProvider }) {
   const { getContract } = useContract();
   useEffect(() => {
     async function fetchData() {
+      try {
+        
+    
       setLoading(true);
       await enableCamera();
       const contract = await getContract();
@@ -67,6 +83,10 @@ export default function StartStream({ metamaskProvider }) {
         setScreenCapSupported(true);
       }
       setLoading(false);
+    } catch (error) {
+        alert(error)
+        console.log(error);
+    }
     }
     fetchData().catch((err) => {
       console.log(err);
@@ -105,12 +125,12 @@ export default function StartStream({ metamaskProvider }) {
   }
 
   const enableCamera = async () => {
-    inputStreamRef.current = await window.navigator.mediaDevices.getUserMedia(
-      CAMERA_CONSTRAINTS
-    );
-    switchStream(inputStreamRef.current);
+    // inputStreamRef.current = await window.navigator.mediaDevices.getUserMedia(
+    //   CAMERA_CONSTRAINTS
+    // );
+    // switchStream(webcamRef.current.stream);
     const tempStream: any = new MediaStream();
-    videoRef.current.srcObject = tempStream.remoteStream;
+    // videoRef.current.srcObject = tempStream.remoteStream;
     setCameraEnabled(true);
   };
 
@@ -182,7 +202,7 @@ export default function StartStream({ metamaskProvider }) {
     // });
 
     mediaRecorderRef.current = new MediaRecorder(
-      videoRef.current.captureStream(),
+      webcamRef.current.stream,
       {
         mimeType: "video/webm",
         audioBitsPerSecond: 128000,
@@ -241,14 +261,15 @@ export default function StartStream({ metamaskProvider }) {
       ) : null}
 
       <div className="relative bg-event bg-cover bg-center rounded-xl w-2/3  m-auto">
-        <video
+        {/* <video
           autoPlay={true}
           ref={videoRef}
           muted
           playsInline
           className="rounded-xl w-full h-full"
-        />
-
+        /> */}
+        
+<Webcam ref={webcamRef}  videoConstraints={cameraconst}  className="rounded-xl w-full h-full"/>
         {loading ? (
           <div className="absolute w-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
             <BeatLoader loading={loading} />
@@ -285,19 +306,35 @@ export default function StartStream({ metamaskProvider }) {
                 {isDeleting ? (
                   <BeatLoader loading={isDeleting} />
                 ) : streaming ? (
+                  <>
                   <ColoredButton onClick={handleStopStreaming}>
                     STOP STREAM
                   </ColoredButton>
+                  {/* <button>Change-camera</button> */}
+                  </>
                 ) : (
+                  <>
                   <ColoredButton
                     onClick={handleStartStreaming}
                     disabled={!cameraEnabled}
                   >
                     START STREAM
                   </ColoredButton>
+                    <ColoredButton onClick={()=>{
+               
+
+
+
+setcameraConst((pre)=>pre.facingMode==="environment"?{audio: true,
+  video: true,
+  facingMode: "user"}: {audio: true,
+    video: true,
+    facingMode: "environment"})
+                    }}>Change-camera</ColoredButton>
+                    </>
                 )}
               </div>
-
+           
               <div className="col-end-7 col-span-1">
                 {isDeleting || chatting ? null : (
                   <button onClick={handleChat}>

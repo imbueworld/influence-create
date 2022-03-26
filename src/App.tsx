@@ -5,6 +5,7 @@ import React, {
   useMemo,
   useState,
 } from "react";
+import axios from "axios";
 import { Routes, Route, HashRouter } from "react-router-dom";
 import "./App.css";
 import CreateEvent from "./pages/CreateEvent";
@@ -30,6 +31,9 @@ function App({ metamaskProvider }) {
     () => ({ walletProvider, setWalletProvider }),
     [walletProvider]
   );
+
+
+
 
   return (
     <div className="container text-center m-auto font-Lulo">
