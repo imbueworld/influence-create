@@ -52,7 +52,7 @@ export default function JoinStream({ metamaskProvider }) {
     fetchData().catch((err) => console.error(err));
   }, []);
 
-  useEffect(() => {});
+  useEffect(() => {},[]);
 
   useEffect(() => {
     if (streamId)

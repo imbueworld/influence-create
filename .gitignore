@@ -11,6 +11,8 @@
 # production
 /build
 
+/doc
+
 # solidity
 soljson-v0.8.7+commit.e28d00a7.js
 /bin
