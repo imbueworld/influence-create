@@ -161,18 +161,28 @@ const [cameraconst,setcameraConst] = useState({ audio: true,
     switchStream(screenStreamRef.current);
     setScreenEnabled(true);
   };
-
+  
   function handleStartStreaming() {
     const wsUrl = `${livepeer.webSocketServerURL}/rtmp?key=${streamKey}`;
 
     wsRef.current = new WebSocket(wsUrl);
 
-    wsRef.current.addEventListener("open", function open() {
+    wsRef.current.onopen = () => {
+      
+      console.log('connected');
       setStreaming(true);
       mediaRecorderRef.current.start(500);
 
       timer.current = window.setInterval(getConnected, 5000);
-    });
+
+    }
+   
+    // wsRef.current.addEventListener("open", function open() {
+    //   setStreaming(true);
+    //   mediaRecorderRef.current.start(500);
+
+    //   timer.current = window.setInterval(getConnected, 5000);
+    // });
 
     wsRef.current.addEventListener("close", () => {
       console.log("websocket closed");
