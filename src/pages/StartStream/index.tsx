@@ -15,6 +15,7 @@ import "./ReplaceableMediaStream";
 // import new
 
 import Webcam from "react-webcam";
+import { error } from "console";
 const CryptoJS = require("crypto-js");
 
 
@@ -112,11 +113,16 @@ const [cameraconst,setcameraConst] = useState({ audio: true,
   }, [connectedToLive]);
 
   function getConnected() {
+    alert('geotcon')
     getStreamStatus(streamId)
       .then((res) => {
+        alert(res.data.isActive)
         setConnectedToLive(Boolean(Boolean(res.data.isActive)));
       })
-      .catch((err) => {});
+      .catch((err) => {
+        alert(err.message)
+        alert('err')
+      });
   }
 
   function switchStream(stream) {
@@ -163,17 +169,52 @@ const [cameraconst,setcameraConst] = useState({ audio: true,
   };
   
   function handleStartStreaming() {
+    // setConnectedToLive(true)
+    alert('click-on-hadlestart')
     const wsUrl = `${livepeer.webSocketServerURL}/rtmp?key=${streamKey}`;
 
     wsRef.current = new WebSocket(wsUrl);
 
     wsRef.current.onopen = () => {
-      
-      console.log('connected');
-      setStreaming(true);
-      mediaRecorderRef.current.start(500);
 
-      timer.current = window.setInterval(getConnected, 5000);
+
+
+
+      try {
+
+
+
+
+
+
+        mediaRecorderRef.current = new MediaRecorder(
+          webcamRef.current.stream,
+          {
+            mimeType: "video/mp4",
+            audioBitsPerSecond: 128000,
+            videoBitsPerSecond: 2500000,
+          }
+        );
+    
+        mediaRecorderRef.current.addEventListener("dataavailable", (e) => {
+          wsRef.current.send(e.data);
+        });
+
+
+
+
+
+        alert('connected')
+        console.log('connected');
+        setStreaming(true);
+        mediaRecorderRef.current.start(500);
+        getConnected()
+        timer.current = window.setInterval(getConnected, 5000);
+        
+      } catch (error) {
+        alert(error.message)
+      }
+  
 
     }
    
@@ -187,11 +228,13 @@ const [cameraconst,setcameraConst] = useState({ audio: true,
     wsRef.current.addEventListener("close", () => {
       console.log("websocket closed");
       stopStreaming();
+      alert('close-ws')
     });
 
     wsRef.current.addEventListener("error", (err) => {
       console.log("websocket error");
       stopStreaming();
+      alert('error')
     });
 
     // const tempStream: any = new MediaStream();
@@ -211,18 +254,18 @@ const [cameraconst,setcameraConst] = useState({ audio: true,
     //   });
     // });
 
-    mediaRecorderRef.current = new MediaRecorder(
-      webcamRef.current.stream,
-      {
-        mimeType: "video/webm",
-        audioBitsPerSecond: 128000,
-        videoBitsPerSecond: 2500000,
-      }
-    );
+    // mediaRecorderRef.current = new MediaRecorder(
+    //   webcamRef.current.stream,
+    //   {
+    //     mimeType: "video/webm",
+    //     audioBitsPerSecond: 128000,
+    //     videoBitsPerSecond: 2500000,
+    //   }
+    // );
 
-    mediaRecorderRef.current.addEventListener("dataavailable", (e) => {
-      wsRef.current.send(e.data);
-    });
+    // mediaRecorderRef.current.addEventListener("dataavailable", (e) => {
+    //   wsRef.current.send(e.data);
+    // });
   }
 
   function stopStreaming() {
