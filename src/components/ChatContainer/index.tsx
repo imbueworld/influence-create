@@ -5,6 +5,14 @@ import Message from "./Message";
 import { v4 as uuidv4 } from "uuid";
 import sendIcon from "./send.svg";
 import closeIcon from "./close.svg";
+import { Rnd } from "react-rnd";
+const style = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  border: "solid 1px #ddd",
+  background: "#f0f0f0"
+};
 export default function ChatContainer({ username, room, handler }) {
   const chatServerURL = "https://imbue-chat-server.herokuapp.com";
   const [messages, setMessage] = useState([]);
@@ -70,12 +78,21 @@ export default function ChatContainer({ username, room, handler }) {
     socket.current.emit("leave", room);
     handler(false);
   }
+// alert(window.screen.width<=640)
 
   return (
-    <Draggable nodeRef={container}>
+     <Rnd
+    style={style}
+    default={{
+      x: 0,
+      y: 0,
+      width: 320,
+      height: 200
+    }}
+  >
       <div
         ref={container}
-        className='absolute right-2 bottom-2 p-4 m-5 rounded-xl w-1/3 h-4/5 bg-[#DEFCFC] font-sans grid grid-rows-8'>
+        className={window.screen.width<=640?'  rounded-xl  bg-[#DEFCFC] font-sans':'absolute right-2 bottom-2 p-4 m-5 rounded-xl w-1/3 h-4/5 bg-[#DEFCFC] font-sans grid grid-rows-8'}>
         <div className='row-start-1 row-span-1'>
           <button className='float-right' onClick={leaveChat}>
             <img src={closeIcon} alt='Send' />
@@ -114,6 +131,6 @@ export default function ChatContainer({ username, room, handler }) {
           </button>
         </form>
       </div>
-    </Draggable>
+    </Rnd>
   );
 }
