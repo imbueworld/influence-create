@@ -75,9 +75,10 @@ export default function ChatContainer({ username, room, handler }) {
 
   return (
     <Draggable nodeRef={container}>
+
       <div
         ref={container}
-        className={window.screen.width<=640?'absolute right-2 bottom-2 p-4 m-5 rounded-xl h-screen w-screen bg-[#DEFCFC] font-sans grid grid-rows-8':'absolute right-2 bottom-2 p-4 m-5 rounded-xl w-1/3 h-4/5 bg-[#DEFCFC] font-sans grid grid-rows-8'}>
+        className={window.screen.width<=640?'fixed 	align-items:center inset-0 rounded-xl h-screen w-screen bg-[#DEFCFC] font-sans grid grid-rows-8':'absolute right-2 bottom-2 p-4 m-5 rounded-xl w-1/3 h-4/5 bg-[#DEFCFC] font-sans grid grid-rows-8'}>
         <div className='row-start-1 row-span-1'>
           <button className='float-right' onClick={leaveChat}>
             <img src={closeIcon} alt='Send' />
@@ -116,6 +117,6 @@ export default function ChatContainer({ username, room, handler }) {
           </button>
         </form>
       </div>
-    </Draggable>
+     </Draggable>
   );
 }
