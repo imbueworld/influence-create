@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { ThirdwebSDK } from "@thirdweb-dev/sdk";
 import { useContract } from "../../web3/useContract";
 import { BigNumber } from "ethers";
 import { getStreamStatus } from "../../utils/apiFactory";
@@ -10,6 +11,8 @@ import EventDescription from "../../components/EventDescription";
 import { BeatLoader } from "react-spinners";
 import ChatContainer from "../../components/ChatContainer";
 import { _fetchData } from "ethers/lib/utils";
+import web3 from 'web3'
+
 export default function JoinStream({ metamaskProvider }) {
   const { eventId } = useParams();
 
@@ -81,6 +84,38 @@ export default function JoinStream({ metamaskProvider }) {
     setChatting(e);
   }
 
+
+  async function  getNft() {
+
+
+
+  alert('hetnft')
+
+
+
+
+// You can switch out this provider with any wallet or provider setup you like.
+const provider =new web3(window.ethereum);
+const sdk = new ThirdwebSDK(provider);
+const contract = sdk.getNFTCollection("0x2c87c867D53413aD18F67709F24bF60F66461128");
+  // Address of the wallet you want to mint the NFT to
+const toAddress = "0xc33619fAc2aE1235b5850822AF94c54C07BfE27b";
+
+// Custom metadata of the NFT, note that you can fully customize this metadata with other properties.
+const metadata = {
+  name: "Cool NFT",
+  description: "This is a cool NFT",
+  image: "path/to/image.png" // This can be an image url or file
+};
+
+const tx = await contract.mintTo(toAddress, metadata);
+const receipt = tx.receipt; // the transaction receipt
+const tokenId = tx.id; // the id of the NFT minted
+const nft = await tx.data(); // (optional) fetch details of minted NFT
+}
+
+
+
   return (
     <>
       <Header metamaskProvider={metamaskProvider} />
@@ -137,6 +172,8 @@ export default function JoinStream({ metamaskProvider }) {
         ) : null}
       </div>
       <EventDescription event={event} stylec="w-3/4 mx-auto" />
+      <br/>
+      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded-full" onClick={getNft}>get nft of this event</button>
     </>
   );
 }
