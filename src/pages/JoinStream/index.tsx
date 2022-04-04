@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ThirdwebSDK } from "@thirdweb-dev/sdk";
+// import { ThirdwebSDK } from "@thirdweb-dev/sdk";
 import { useContract } from "../../web3/useContract";
 import { BigNumber } from "ethers";
 import { getStreamStatus } from "../../utils/apiFactory";
@@ -11,7 +11,9 @@ import EventDescription from "../../components/EventDescription";
 import { BeatLoader } from "react-spinners";
 import ChatContainer from "../../components/ChatContainer";
 import { _fetchData } from "ethers/lib/utils";
+import {ethers} from 'ethers';
 import web3 from 'web3'
+// import { useProvider } from "../../web3/useProvider";
 
 export default function JoinStream({ metamaskProvider }) {
   const { eventId } = useParams();
@@ -84,34 +86,59 @@ export default function JoinStream({ metamaskProvider }) {
     setChatting(e);
   }
 
-
-  async function  getNft() {
-
+  // const { getProvider, getChainId } = useProvider();
 
 
-  alert('hetnft')
+ async function  getNft() {
 
 
+// try {
+
+//   alert('hetnft')
+
+// // new ethers.Wallet(
+// //   '0661a143052f95202cb03bc794fdd1ee2f7472845d338f7e3a12ccbdf2e78400',
+// //   ethers.getDefaultProvider('https://rpc-mumbai.maticvigil.com')
+// // )
 
 
-// You can switch out this provider with any wallet or provider setup you like.
-const provider =new web3(window.ethereum);
-const sdk = new ThirdwebSDK(provider);
-const contract = sdk.getNFTCollection("0x2c87c867D53413aD18F67709F24bF60F66461128");
-  // Address of the wallet you want to mint the NFT to
-const toAddress = "0xc33619fAc2aE1235b5850822AF94c54C07BfE27b";
+// // You can switch out this provider with any wallet or provider setup you like.
+// // const provider = ethers.Wallet.createRandom();
 
-// Custom metadata of the NFT, note that you can fully customize this metadata with other properties.
-const metadata = {
-  name: "Cool NFT",
-  description: "This is a cool NFT",
-  image: "path/to/image.png" // This can be an image url or file
-};
+// const provider = new ethers.providers.Web3Provider(metamaskProvider);
+// console.log(provider);
+// const sdk = new ThirdwebSDK(
+//   new ethers.Wallet(
+//   '44db98c75c09f2fb22e386344bb5b57509714b08c6867abde68f61df3e33320c',
+//   ethers.getDefaultProvider('https://rpc-mumbai.maticvigil.com')
+// )
+// );
 
-const tx = await contract.mintTo(toAddress, metadata);
-const receipt = tx.receipt; // the transaction receipt
-const tokenId = tx.id; // the id of the NFT minted
-const nft = await tx.data(); // (optional) fetch details of minted NFT
+// console.log(sdk);
+// const contract = sdk.getNFTCollection("0x2c87c867D53413aD18F67709F24bF60F66461128");
+// console.log(contract);
+//   // Address of the wallet you want to mint the NFT to
+// const toAddress = "0xc33619fAc2aE1235b5850822AF94c54C07BfE27b";
+
+// // Custom metadata of the NFT, note that you can fully customize this metadata with other properties.
+// const metadata = {
+//   name: "Cool NFT",
+//   description: "This is a cool NFT",
+//   image: "path/to/image.png" // This can be an image url or file
+// };
+
+// const tx = await contract.mint(metadata);
+// console.log(tx);
+// const receipt = tx.receipt; // the transaction receipt
+// const tokenId = tx.id; // the id of the NFT minted
+// const nft = await tx.data(); // (optional) fetch details of minted NFT
+  
+// } catch (error) {
+//   alert('jj')
+//   console.log(error.message);
+// }
+
+
 }
 
 

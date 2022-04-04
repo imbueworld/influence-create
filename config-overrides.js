@@ -16,6 +16,7 @@ module.exports = {
     config.resolve.fallback = {
       stream: require.resolve("stream-browserify"),
       buffer: require.resolve("buffer"),
+      path: require.resolve("path-browserify"),
     };
     return config;
   },
