@@ -85,6 +85,10 @@ export default function EventItem({ event, metamaskProvider }) {
   function handleStartStream() {
     navigate(`/start-stream/${eventId}`);
   }
+
+  function handleStartStreamObs() {
+    navigate(`/start-stream-0bs/${eventId}`);
+  }
   function handleJoinStream() {
     navigate(`/join-stream/${eventId}`);
   }
@@ -93,7 +97,7 @@ export default function EventItem({ event, metamaskProvider }) {
   }
   if (deleted) return <></>;
   return (
-    <div className="md:grid md:grid-cols-12 items-center py-1 px-5 bg-[#242429] rounded-3xl my-3 text-white md:w-1/2">
+    <div className="md:grid md:grid-cols-12 auto-cols-auto items-center py-1 px-5 bg-[#242429] rounded-3xl my-3 text-white md:w-1/2">
       <div className="md:col-start-1 md:col-end-5 text-lg md:pl-8 md:text-left">
         {event._name}
       </div>
@@ -110,11 +114,13 @@ export default function EventItem({ event, metamaskProvider }) {
           <img width="50%" height="50%" src={no} alt="Dead" />
         )}
       </div>
-      <div className=" md:col-start-10 md:col-end-13 text-center md:text-right">
+      <div className=" flex gap-1 flex-col colu md:col-start-10 md:col-end-13 text-center md:text-right">
         {loading ? (
           <BeatLoader loading={loading} />
         ) : isCreator ? (
-          <ColoredButton onClick={handleStartStream}>START EVENT</ColoredButton>
+
+          <>  <ColoredButton onClick={handleStartStream}>START EVENT </ColoredButton>  <ColoredButton   stylec="text-[9px]" onClick={handleStartStreamObs}>START WITH CUSTOM STREAM</ColoredButton></>
+
         ) : isPurchased ? (
           <ColoredButton onClick={handleJoinStream}>JOIN EVENT</ColoredButton>
         ) : (
@@ -126,3 +132,5 @@ export default function EventItem({ event, metamaskProvider }) {
     </div>
   );
 }
+
+

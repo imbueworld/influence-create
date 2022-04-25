@@ -5,12 +5,12 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import axios from "axios";
 import { Routes, Route, HashRouter } from "react-router-dom";
 import "./App.css";
 import CreateEvent from "./pages/CreateEvent";
 import Home from "./pages/Home";
 import StartStream from "./pages/StartStream";
+import StartStreamObs from "./pages/StartStreamObs";
 import PurchaseEvent from "./pages/PurchaseEvent";
 import ListEvent from "./pages/ListEvent";
 import JoinStream from "./pages/JoinStream";
@@ -58,6 +58,15 @@ function App({ metamaskProvider }) {
               element={
                 <SecureRoute
                   component={StartStream}
+                  metamaskProvider={metamaskProvider}
+                />
+              }
+            />
+                   <Route
+              path="/start-stream-0bs/:eventId"
+              element={
+                <SecureRoute
+                  component={StartStreamObs}
                   metamaskProvider={metamaskProvider}
                 />
               }
