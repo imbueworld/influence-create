@@ -252,9 +252,9 @@ axios.request({
         <p className="text-sm  truncat" >Event Description: {nftObj.description}</p>
         <p className="text-sm" >Owner: {nftOwner}</p>
         <div className="justify-center card-actions">
-          <a className =" align-middle " target="_blank" href={nftObj.external_url} >
+          {/* <a className =" align-middle " target="_blank" href={nftObj.external_url} >
            <FaDiscord />
-          </a>
+          </a> */}
         </div>
         <div>
         <p className="text-sm">Contract Address: 0xd99Fa8b62a48D35267F51aA9699E663568235476</p>
