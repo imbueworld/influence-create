@@ -37,6 +37,7 @@ export default function ListEvent({ metamaskProvider }) {
         )
         .then((events) => {
           setEvents(events);
+          
           setLoading(false);
         })
         .catch((err) => console.error(err));
