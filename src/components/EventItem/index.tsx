@@ -26,7 +26,6 @@ export default function EventItem({ event, metamaskProvider }) {
   const navigate = useNavigate();
   const eventId = BigNumber.from(event._index).toString();
   const walletAddress = metamaskProvider.selectedAddress;
-
   const isCreator = BigNumber.from(walletAddress).eq(
     BigNumber.from(event._owner)
   );
@@ -49,6 +48,7 @@ export default function EventItem({ event, metamaskProvider }) {
   else durationTime = durationTime + "min";
 
   const [isPurchased, setIsPurchased] = useState(false);
+  const [isFree, setIsFree] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const [deleted, setDeleted] = useState(false);
@@ -59,7 +59,6 @@ export default function EventItem({ event, metamaskProvider }) {
       CryptoJS.enc.Utf8
     );
     const streamArray = streamData.split("&&");
-
     setLoading(true);
 
     async function fetchData() {
@@ -75,6 +74,10 @@ export default function EventItem({ event, metamaskProvider }) {
       const isActive = (await getStreamStatus(streamArray[0])).data.isActive;
       setIsActive(isActive);
       setLoading(false);
+
+      if (parseInt(BigNumber.from(event._price).toString(), 10) === 0) {
+        setIsFree(true);
+      }
     }
     fetchData().catch((err) => {
       if (err.toString().endsWith(500)) {
@@ -118,9 +121,17 @@ export default function EventItem({ event, metamaskProvider }) {
         {loading ? (
           <BeatLoader loading={loading} />
         ) : isCreator ? (
-
-          <>  <ColoredButton onClick={handleStartStream}>START EVENT </ColoredButton>  <ColoredButton   stylec="text-[9px]" onClick={handleStartStreamObs}>START WITH CUSTOM STREAM</ColoredButton></>
-
+          <>
+            {" "}
+            <ColoredButton onClick={handleStartStream}>
+              START EVENT{" "}
+            </ColoredButton>{" "}
+            <ColoredButton stylec="text-[9px]" onClick={handleStartStreamObs}>
+              START WITH CUSTOM STREAM
+            </ColoredButton>
+          </>
+        ) : isFree ? (
+          <ColoredButton onClick={handleJoinStream}>JOIN EVENT</ColoredButton>
         ) : isPurchased ? (
           <ColoredButton onClick={handleJoinStream}>JOIN EVENT</ColoredButton>
         ) : (
@@ -132,5 +143,3 @@ export default function EventItem({ event, metamaskProvider }) {
     </div>
   );
 }
-
-

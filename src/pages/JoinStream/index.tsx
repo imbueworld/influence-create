@@ -10,15 +10,14 @@ import EventDescription from "../../components/EventDescription";
 import { BeatLoader } from "react-spinners";
 import ChatContainer from "../../components/ChatContainer";
 import { _fetchData } from "ethers/lib/utils";
-import {ethers} from 'ethers'
-import { create as ipfsHttpClient } from 'ipfs-http-client'
-import nftabi from './nftAbi.json';
+import { ethers } from "ethers";
+import { create as ipfsHttpClient } from "ipfs-http-client";
+import nftabi from "./nftAbi.json";
 import axios from "axios";
 import ColoredButton from "../../components/ColoredButton";
-import { FaDiscord } from 'react-icons/fa';
+import { FaDiscord } from "react-icons/fa";
 
-
-const client = ipfsHttpClient({url:'https://ipfs.infura.io:5001/api/v0'});
+const client = ipfsHttpClient({ url: "https://ipfs.infura.io:5001/api/v0" });
 
 export default function JoinStream({ metamaskProvider }) {
   const { eventId } = useParams();
@@ -31,10 +30,10 @@ export default function JoinStream({ metamaskProvider }) {
   const [playbackURL, setPlaybackURL] = useState(null);
   const [chatting, setChatting] = useState(false);
   const [streamId, setStreamId] = useState(null);
-  const [nftObj, setnftObj] = useState(null)
-  const [nftOwner, setnftOwner] = useState(null)
-  const [nfttokenid, setnfttokenid] = useState(null)
-
+  const [nftObj, setnftObj] = useState(null);
+  const [nftOwner, setnftOwner] = useState(null);
+  const [nfttokenid, setnfttokenid] = useState(null);
+  const [isFree, setIsFree] = useState(false);
   const timer = useRef(null);
   const playerRef = useRef(null);
   const navigate = useNavigate();
@@ -44,13 +43,17 @@ export default function JoinStream({ metamaskProvider }) {
       setLoading(true);
       const contract = await getContract();
       const purchased = await contract.isPurchased(BigNumber.from(eventId));
-
-      if (!purchased) {
-        alert("You didn`t purchase this event.Please purchase and try again.");
-        navigate(`/purchase-event/${eventId}`);
-        return;
-      }
       const event = await contract._events(BigNumber.from(eventId));
+      if (!(parseInt(BigNumber.from(event._price).toString(), 10) === 0)) {
+        if (!purchased) {
+          alert(
+            "You didn`t purchase this event.Please purchase and try again."
+          );
+          navigate(`/purchase-event/${eventId}`);
+          return;
+        }
+      }
+
       setEvent(event);
       let streamData = event._streamData;
       streamData = CryptoJS.AES.decrypt(streamData, event._name).toString(
@@ -65,7 +68,7 @@ export default function JoinStream({ metamaskProvider }) {
     fetchData().catch((err) => console.error(err));
   }, []);
 
-  useEffect(() => {},[]);
+  useEffect(() => {}, []);
 
   useEffect(() => {
     if (streamId)
@@ -90,92 +93,86 @@ export default function JoinStream({ metamaskProvider }) {
       });
   }
 
-
-
   function handleChat(e) {
     setChatting(e);
   }
 
-
-
-  async function  onUploadtoipfs() {
-    
+  async function onUploadtoipfs() {
     const data = JSON.stringify({
-      name:event._name,description:event._description, image:"https://gateway.pinata.cloud/ipfs/QmamS48Hk7Gyn5tB2GAvzZp3GGimtRepHihBerSqYpfpYi",external_url: "https://discord.gg/23YGjR9maF", 
-  });
+      name: event._name,
+      description: event._description,
+      image:
+        "https://gateway.pinata.cloud/ipfs/QmamS48Hk7Gyn5tB2GAvzZp3GGimtRepHihBerSqYpfpYi",
+      external_url: "https://discord.gg/23YGjR9maF",
+    });
 
-
-  try{
-      const added = await client.add(data)
-      const url = `https://ipfs.infura.io/ipfs/${added.path}`
+    try {
+      const added = await client.add(data);
+      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
       console.log(url);
 
+      const onMintNftTokeN = async () => {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(
+          "0xdA774732988fB28790c3A9329e85BCaFB93E025b",
+          nftabi,
+          signer
+        );
 
-    const onMintNftTokeN = async () => {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
-      const contract = new ethers.Contract(
-        "0xdA774732988fB28790c3A9329e85BCaFB93E025b",
-        nftabi,
-        signer
-      ) ;
-    
-      try {
+        try {
+          const transaction = await contract.freeMint(
+            metamaskProvider.selectedAddress,
+            url
+          );
 
-        const transaction = await contract.freeMint(metamaskProvider.selectedAddress,url );
-   
-        transaction
-          .wait()
-          .then(
-(async (tx)=>{
-  // alert(tx)
-  console.log(tx.transactionHash);
-  const receipt = await provider.getTransactionReceipt(tx.transactionHash)
-const tokenId = receipt.logs[0].topics[3]
-setnfttokenid(parseInt(tokenId, 16))
-let Owner = await contract.ownerOf(parseInt(tokenId, 16));
-// alert(Owner)
-setnftOwner(Owner)
-// alert(tokenId.toString())
-console.log(parseInt(tokenId, 16));
-let currentValue = await contract.tokenURI(parseInt(tokenId, 16));
-console.log(currentValue);
+          transaction
+            .wait()
+            .then(async (tx) => {
+              // alert(tx)
+              console.log(tx.transactionHash);
+              const receipt = await provider.getTransactionReceipt(
+                tx.transactionHash
+              );
+              const tokenId = receipt.logs[0].topics[3];
+              setnfttokenid(parseInt(tokenId, 16));
+              let Owner = await contract.ownerOf(parseInt(tokenId, 16));
+              // alert(Owner)
+              setnftOwner(Owner);
+              // alert(tokenId.toString())
+              console.log(parseInt(tokenId, 16));
+              let currentValue = await contract.tokenURI(parseInt(tokenId, 16));
+              console.log(currentValue);
 
+              let headersList = {
+                Accept: "*/*",
+              };
 
-let headersList = {
- "Accept": "*/*",
-}
+              axios
+                .request({
+                  url: currentValue,
+                  method: "GET",
+                  headers: headersList,
+                })
+                .then(function (response) {
+                  console.log(response.data);
+                  setnftObj(response.data);
+                  console.log(nftObj);
+                });
+            })
+            .catch(alert);
+        } catch (error) {
+          // logger.error(error);
+          alert(error.message);
+        }
+      };
 
-
-axios.request({
-  url: currentValue,
-  method: "GET",
-  headers: headersList,
-}).then(function (response) {
-  console.log(response.data);
-  setnftObj(response.data)
-  console.log(nftObj);
-})
-}
-
-
-          ))
-          .catch(alert);
-      } catch (error) {
-        // logger.error(error);
-        alert(error.message)
-      }
-    };
-
-  onMintNftTokeN().then()
-    
-  }catch(error){
-      console.log(`Error uploading file: `, error)
+      onMintNftTokeN().then();
+    } catch (error) {
+      console.log(`Error uploading file: `, error);
       console.log(error.message);
+    }
   }
-  }
-
-
 
   return (
     <>
@@ -239,32 +236,40 @@ axios.request({
 
       {nftObj ? (
         <>
-           <div className="container grid gap-2 xl:grid-cols-12 md:grid-cols-6 sm:grid-cols-1">
-         <div className=" xl:col-start-4 xl:col-span-6 md:col-start-2 md:col-span-2 sm:col-start-1   text-center bg-[#defcfb] text-[#242429] rounded-md shadow-md  card">
-      <h2 className="my-2 text-4xl font-bold card-title">#{nfttokenid}</h2>
-      <div className="px-4 pt-4 ">
-        <img src={nftObj.image} alt={nftObj.name} className="mask mask-sircleu" />
-      </div>
-      <div className="card-body">
-
-
-<p className="text-sm " >Event Name: {nftObj.name}</p>
-        <p className="text-sm  truncat" >Event Description: {nftObj.description}</p>
-        <p className="text-sm" >Owner: {nftOwner}</p>
-        <div className="justify-center card-actions">
-          {/* <a className =" align-middle " target="_blank" href={nftObj.external_url} >
+          <div className="container grid gap-2 xl:grid-cols-12 md:grid-cols-6 sm:grid-cols-1">
+            <div className=" xl:col-start-4 xl:col-span-6 md:col-start-2 md:col-span-2 sm:col-start-1   text-center bg-[#defcfb] text-[#242429] rounded-md shadow-md  card">
+              <h2 className="my-2 text-4xl font-bold card-title">
+                #{nfttokenid}
+              </h2>
+              <div className="px-4 pt-4 ">
+                <img
+                  src={nftObj.image}
+                  alt={nftObj.name}
+                  className="mask mask-sircleu"
+                />
+              </div>
+              <div className="card-body">
+                <p className="text-sm ">Event Name: {nftObj.name}</p>
+                <p className="text-sm  truncat">
+                  Event Description: {nftObj.description}
+                </p>
+                <p className="text-sm">Owner: {nftOwner}</p>
+                <div className="justify-center card-actions">
+                  {/* <a className =" align-middle " target="_blank" href={nftObj.external_url} >
            <FaDiscord />
           </a> */}
-        </div>
-        <div>
-        <p className="text-sm">Contract Address: 0xd99Fa8b62a48D35267F51aA9699E663568235476</p>
-        <p className="text-sm">Token ID: {nfttokenid}</p>
-        </div>
-      </div>
-    </div>
-    </div>
+                </div>
+                <div>
+                  <p className="text-sm">
+                    Contract Address: 0xd99Fa8b62a48D35267F51aA9699E663568235476
+                  </p>
+                  <p className="text-sm">Token ID: {nfttokenid}</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </>
-    ) :null}
+      ) : null}
     </>
   );
 }
