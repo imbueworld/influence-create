@@ -13,12 +13,15 @@ import StartStream from "./pages/StartStream";
 import StartStreamObs from "./pages/StartStreamObs";
 import PurchaseEvent from "./pages/PurchaseEvent";
 import ListEvent from "./pages/ListEvent";
+import Explorer from "./pages/Explore";
 import JoinStream from "./pages/JoinStream";
 import WrongNetwork from "./pages/WrongNetwork";
+import StreamView from "./pages/StreamView";
 import Test from "./pages/Test";
 import SecureRoute from "./components/Routing/SecureRoute";
 import { useProvider } from "./web3/useProvider";
 import Web3Provider from "./web3/Web3Provider";
+
 export const WalletProviderContext = createContext({
   walletProvider: null,
   setWalletProvider: null,
@@ -31,9 +34,6 @@ function App({ metamaskProvider }) {
     () => ({ walletProvider, setWalletProvider }),
     [walletProvider]
   );
-
-
-
 
   return (
     <div className="container text-center m-auto font-Lulo">
@@ -62,7 +62,7 @@ function App({ metamaskProvider }) {
                 />
               }
             />
-                   <Route
+            <Route
               path="/start-stream-0bs/:eventId"
               element={
                 <SecureRoute
@@ -89,11 +89,31 @@ function App({ metamaskProvider }) {
                 />
               }
             />
+
+            <Route
+              path="/view-stream/:eventId"
+              element={
+                <SecureRoute
+                  component={StreamView}
+                  metamaskProvider={metamaskProvider}
+                />
+              }
+            />
+
             <Route
               path="/list-event"
               element={
                 <SecureRoute
                   component={ListEvent}
+                  metamaskProvider={metamaskProvider}
+                />
+              }
+            />
+            <Route
+              path="/list-recorded"
+              element={
+                <SecureRoute
+                  component={Explorer}
                   metamaskProvider={metamaskProvider}
                 />
               }

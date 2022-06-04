@@ -90,7 +90,9 @@ export default function Home({ metamaskProvider }) {
   function handleListEvent() {
     navigate("/list-event");
   }
-
+function handleListStream() {
+  navigate("/list-recorded");
+}
   const homeData = address ? (
     <>
       <div className="md:text-3xl sm:text-2xl text-xl mb-3">
@@ -104,6 +106,9 @@ export default function Home({ metamaskProvider }) {
         </ColoredButton>
         <ColoredButton onClick={handleListEvent} stylec="mx-4 my-4">
           GET EVENTS
+        </ColoredButton>
+        <ColoredButton onClick={handleListStream} stylec="mx-4 my-4">
+          Explorere Page
         </ColoredButton>
       </div>
       <div className="grid grid-flow-row items-center justify-items-center">
