@@ -27,7 +27,7 @@ export default function Explorere({ metamaskProvider }) {
     const authorizationHeader = `Bearer ${apiKey}`;
     try {
       const recordedStreamList = await axios.get(
-        `${proxyURL}recordedstream`,
+        `${proxyURL}/recordedstream`,
         {
           headers: {
             "content-type": "application/json",

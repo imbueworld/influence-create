@@ -93,7 +93,7 @@ export default function CreateEvent({ metamaskProvider }) {
         streamData = CryptoJS.AES.encrypt(streamData, name).toString();
         if(check) {
         const result2 = await axios.patch(
-          `${proxyURL}${id}/record`,
+          `${proxyURL}/${id}/record`,
           {record:true},
           {
             headers: {
