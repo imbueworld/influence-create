@@ -19,7 +19,7 @@ function StreamView({ metamaskProvider }) {
     const authorizationHeader = `Bearer ${apiKey}`;
     try {
       const recordedStramRespose = await axios.get(
-        `${proxyURL}${eventId}`,
+        `${proxyURL}/streamurl/${eventId}`,
         {
           headers: {
             "content-type": "application/json",
