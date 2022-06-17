@@ -43,6 +43,7 @@ export default function CreateEvent({ metamaskProvider }) {
   // const contract = getContract(metamaskProvider);
   const navigate = useNavigate();
   const { getContract } = useContract();
+  const [check, setCheck] = useState(false);
   const [loading, setLoading] = useState(false);
   const [paid, setPaid] = useState(false);
   const [formData, setFormData] = useState({
@@ -90,6 +91,20 @@ export default function CreateEvent({ metamaskProvider }) {
         let streamData =
           id + "&&" + streamKey + "&&" + playbackId + "&&" + apiKey;
         streamData = CryptoJS.AES.encrypt(streamData, name).toString();
+        if(check) {
+        const result2 = await axios.patch(
+          `${proxyURL}/${id}/record`,
+          {record:true},
+          {
+            headers: {
+              "content-type": "application/json",
+              authorization: authorizationHeader, // Stream Id needs to be passed as a header
+            },
+          }
+        );
+        console.log(result2)
+        }
+     
         const contract = await getContract();
         const pendingAddEvent = await contract.addEvent(
           name,
@@ -139,6 +154,7 @@ export default function CreateEvent({ metamaskProvider }) {
           onChange={onChange}
           required
         />
+        
         <div className="flex">
           <input
             className="flex-auto w-3/4 bg-transparent border-b focus:outline-none border-black text-center mr-4"
@@ -160,6 +176,7 @@ export default function CreateEvent({ metamaskProvider }) {
             getOptionLabel={(e) => e.text}
           />
         </div>
+
         <input
           className="bg-transparent border-b focus:outline-none border-black text-center"
           type="text"
@@ -221,6 +238,19 @@ export default function CreateEvent({ metamaskProvider }) {
             min="0"
           />
         ) : null}
+        <div className="flex justify-center gap-1 align-center">
+          <div>Recording</div>
+          <div>
+            <input
+              type="checkbox"
+              name="checkbox"
+              value={check.toString()}
+              onChange={() => {
+                setCheck(!check);
+              }}
+            />
+          </div>
+        </div>
 
         <ColoredButton
           type="submit"
