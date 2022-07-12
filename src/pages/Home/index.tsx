@@ -90,9 +90,17 @@ export default function Home({ metamaskProvider }) {
   function handleListEvent() {
     navigate("/list-event");
   }
-function handleListStream() {
-  navigate("/list-recorded");
-}
+  function handleListStream() {
+    navigate("/list-recorded");
+  }
+  function handleListSubscriptions() {
+    navigate("/list-subscriptions");
+  }
+
+  function handleCreateSubscription() {
+    navigate("/create-subscription");
+  }
+  
   const homeData = address ? (
     <>
       <div className="md:text-3xl sm:text-2xl text-xl mb-3">
@@ -109,6 +117,12 @@ function handleListStream() {
         </ColoredButton>
         <ColoredButton onClick={handleListStream} stylec="mx-4 my-4">
           Explorere Page
+        </ColoredButton>
+        {/* <ColoredButton onClick={handleCreateSubscription} stylec="mx-4 my-4">
+          CREATE SUBSCRIPTION
+        </ColoredButton> */}
+        <ColoredButton onClick={handleListSubscriptions} stylec="mx-4 my-4">
+          Subscriptions
         </ColoredButton>
       </div>
       <div className="grid grid-flow-row items-center justify-items-center">
