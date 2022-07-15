@@ -21,6 +21,8 @@ import Test from "./pages/Test";
 import SecureRoute from "./components/Routing/SecureRoute";
 import { useProvider } from "./web3/useProvider";
 import Web3Provider from "./web3/Web3Provider";
+import Subscriptions from "./pages/Subscriptions";
+import CreateSubscription from "./pages/CreateSubscription";
 
 export const WalletProviderContext = createContext({
   walletProvider: null,
@@ -117,6 +119,23 @@ function App({ metamaskProvider }) {
                   metamaskProvider={metamaskProvider}
                 />
               }
+            />
+            <Route 
+            path="/list-subscriptions"
+            element = {
+              <SecureRoute 
+              component = {Subscriptions}
+              metamaskProvider = {metamaskProvider}
+              />
+            }/>
+            <Route 
+            path="/create-subscription"
+            element = {
+              <SecureRoute 
+              component = {CreateSubscription}
+              metamaskProvider = {metamaskProvider}
+              />
+            }
             />
             <Route
               path="/wrong-network"

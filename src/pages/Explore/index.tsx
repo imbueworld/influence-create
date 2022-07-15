@@ -9,6 +9,9 @@ import eventex from "./../../assets/image/event-ex.png";
 import EventItem from "../../components/EventItem";
 import Header from "../../components/Header";
 import ColoredButton from "../../components/ColoredButton";
+import { getStreamStatus } from "../../utils/apiFactory";
+
+const CryptoJS = require("crypto-js");
 // import { EventItem, Header } from "../../components";
 export default function Explorere({ metamaskProvider }) {
   const navigate = useNavigate();
@@ -19,26 +22,45 @@ export default function Explorere({ metamaskProvider }) {
   const [loading, setLoading] = useState(false);
   const { getContract } = useContract();
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     requestStreamList();
   }, []);
   async function requestStreamList() {
-    const { apiKey,proxyURL } = livepeer;
+    const { apiKey, proxyURL } = livepeer;
     const authorizationHeader = `Bearer ${apiKey}`;
     try {
-      const recordedStreamList = await axios.get(
-        `${proxyURL}/recordedstream`,
-        {
-          headers: {
-            "content-type": "application/json",
-            authorization: authorizationHeader, // API Key needs to be passed as a header
-          },
+      const response = await axios.get(`${proxyURL}/recordedstream`, {
+        headers: {
+          "content-type": "application/json",
+          authorization: authorizationHeader, // API Key needs to be passed as a header
+        },
+      });
+      let recordedStreamList = response.data;
+
+
+      const promises = Object.values(recordedStreamList).map(
+        async (event: any) => {
+          let assetName = event.name;
+          const myArray = assetName.split("live-to-vod-");
+          const streamIdA = myArray[1];
+          // console.log(streamIdA);
+
+          const b = await getStreamStatus(streamIdA);
+          // console.log("bbb",b?.data?.parentId)
+          const contract = await getContract();
+          const thumbnail = await contract._thumbnails(b?.data?.parentId);
+          // console.log("bbbb",thumbnail)
+          event.thumbnail = thumbnail;
+          return event;
         }
       );
 
-      setEvents(Object.values(recordedStreamList.data));
-      // console.log(events);
-      setLoading(false)
+      const promisedResult = await Promise.all(promises);
+    
+
+      setEvents(promisedResult);
+
+      setLoading(false);
     } catch (error) {
       alert(error.message);
     }
@@ -56,10 +78,19 @@ export default function Explorere({ metamaskProvider }) {
       events.map((event) => {
         return (
           <div>
-         
-           <img onClick={() => {
+            <img
+              onClick={() => {
                 viewpage(event.id);
-              }} style={{ borderRadius: "2.375rem",cursor:"pointer",    maxWidth: "222px" }} src={eventex} />
+              }}
+              style={{
+                borderRadius: "2.375rem",
+                cursor: "pointer",
+                maxWidth: "222px",
+                width: "222px",
+                height: "115px",
+              }}
+              src={event.thumbnail ? event.thumbnail : eventex}
+            />
             {/* <button
               onClick={() => {
                 viewpage(event.id);
@@ -72,16 +103,12 @@ export default function Explorere({ metamaskProvider }) {
       })
     ) : (
       <div className="text-2xl mt-3">NO Available Recorded Events...</div>
-  
-   
     );
   return (
     <>
       <Header metamaskProvider={metamaskProvider} />
       <div className="px-40">
-        {loading ? (
-          <BarLoader loading={loading} />
-        ) : (
+
           <div className="flex sm:flex-co">
             <div style={{ width: "60%" }}>
               <div>
@@ -106,11 +133,11 @@ export default function Explorere({ metamaskProvider }) {
                 <p>Last in 24 hours</p>
               </div>
             </div>
-            <div className="flex flex-wrap gap-10 ">
-            {availableEvents}
-            </div>
+              {/* <div className="flex flex-wrap gap-10 ">{availableEvents}</div>
+               */}
+                  {loading ? <BarLoader loading={loading} /> : <div className="flex flex-wrap gap-10 ">{availableEvents}</div>}
           </div>
-        )}
+        {/* )} */}
       </div>
     </>
   );

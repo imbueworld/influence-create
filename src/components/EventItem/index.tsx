@@ -5,9 +5,24 @@ import { useContract } from "../../web3/useContract";
 import ColoredButton from "../ColoredButton";
 import { BeatLoader } from "react-spinners";
 import { getStreamStatus } from "../../utils/apiFactory";
+
+
+
+
+import { AiFillDollarCircle } from 'react-icons/ai';
+
+
+
+
+
 import yes from "./yes.png";
 import no from "./no.png";
 const CryptoJS = require("crypto-js");
+
+
+
+
+
 export default function EventItem({ event, metamaskProvider }) {
   const monthNames = [
     "January",
@@ -28,8 +43,9 @@ export default function EventItem({ event, metamaskProvider }) {
   const walletAddress = metamaskProvider.selectedAddress;
   const isCreator = BigNumber.from(walletAddress).eq(
     BigNumber.from(event._owner)
-  );
 
+  );
+// alert(event._thumbnail)
   const startDate = new Date(event._start.toNumber());
   const month = monthNames[startDate.getMonth()];
   const day = startDate.getDate();
@@ -64,6 +80,9 @@ export default function EventItem({ event, metamaskProvider }) {
     async function fetchData() {
       if (isCreator) {
         await getStreamStatus(streamArray[0]); //to verify event is deleted from livepeer
+        if (parseInt(BigNumber.from(event._price).toString(), 10) === 0) {
+          setIsFree(true);
+        }
         setLoading(false);
         return;
       }
@@ -101,7 +120,16 @@ export default function EventItem({ event, metamaskProvider }) {
   if (deleted) return <></>;
   return (
     <div className="md:grid md:grid-cols-12 auto-cols-auto items-center py-1 px-5 bg-[#242429] rounded-3xl my-3 text-white md:w-1/2">
-      <div className="md:col-start-1 md:col-end-5 text-lg md:pl-8 md:text-left">
+      <div className="md:col-start-1 md:col-end-2 text-lg  md:text-left">
+        <div style={{position:'relative'}}><img className="py-1" src={event._thumbnail}/>
+        {!isFree ? (  <div style={{    position: "absolute",
+          top: "1px",
+          left: "-1px",
+          color: "black"}}><AiFillDollarCircle/></div>):null}
+      </div>
+      
+      </div>
+      <div className="md:col-start-3 md:col-end-5 text-lg  md:text-left font-bold text-[11px]">
         {event._name}
       </div>
       <div className="md:col-start-5 md:col-end-9 text-center">
