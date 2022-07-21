@@ -54,6 +54,7 @@ export default function Wallet({ metamaskProvider }) {
         })
         .catch((err) => console.error(err));
       setAddress(`${accounts[0].slice(0, 5)}...${accounts[0].slice(-4)}`);
+      localStorage.setItem("walletaddress",accounts[0]);
     } else {
       navigate("/");
     }

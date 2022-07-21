@@ -1,4 +1,4 @@
-import { ethers,BigNumber } from "ethers";
+import { ethers, BigNumber } from "ethers";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BarLoader, BeatLoader } from "react-spinners";
@@ -6,72 +6,68 @@ import ColoredButton from "../../components/ColoredButton";
 import Header from "../../components/Header";
 import { useContract } from "../../web3/useContract";
 
-export default function Subscribtions({metamaskProvider}) {
-  const [subscriptions , setSubscriptions] = useState([]);
+export default function PurchesedSubscriptions({ metamaskProvider }) {
+  const [subscriptions, setSubscriptions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [subscriptionIndex, setSubscriptionIndex]  = useState("")
-  const navigate = useNavigate();
-const {getContract } = useContract();
-useEffect(() => {
-  (async ()=>{
+  const { getContract } = useContract();
+  useEffect(() => {
+    (async () => {
+      try {
+        const contract = await getContract();
+        const sub = await contract.getSubscriptions();
 
+        const getPurchesedSubscriptionList = async (sub, narr) => {
+          const promises = sub.map(async (one_subscriptions) => {
+            const contract = await getContract();
+            const sub2 = await contract.isSubscriptionPurchesed(
+              one_subscriptions?._index
+            );
+            console.log(sub2);
+            if (sub2) {
+              narr.push(one_subscriptions);
+            }
+            return sub2;
+          });
+          console.log(promises);
+          return Promise.all(promises);
+        };
+        const narr = [];
+        const purchesedSubscriptionLIst = await getPurchesedSubscriptionList(
+          sub,
+          narr
+        );
+        console.log(narr);
+        console.log("purchesedSubscriptionLIst", purchesedSubscriptionLIst);
+        setSubscriptions(narr);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+      }
+    })();
+
+    return () => {};
+  }, [subscriptionIndex]);
+
+  async function handelCancelSubscription(index) {
     try {
+      setSubscriptionIndex(index);
       const contract = await getContract();
-      const sub = await contract.getSubscriptions();
-      console.log(sub)
-      setSubscriptions(sub)
-      setLoading(false)
-    } catch (error) {
-      setLoading(false)
-    }
 
-  })();
-
-  return () => {
-  };
-}, [])
-  function handleCreateSubscription() {
-    navigate("/create-subscription");
-  }
-  function handlePurchesedSubscriptions() {
-    navigate("/purchesed-subscriptions");
-  }
-  function handleMysubscriptionPlan() {
-    navigate("/my-subscription-plan");
-  }
-
- async function  handleSubscribe(index) {
-  try {
-    setSubscriptionIndex(index);
-    const contract = await getContract();
-  const sub2 = await contract.isSubscriptionPurchesed(BigNumber.from(index));
-  if(sub2) {
-    alert("you already have purchesed this subscription");
-    setSubscriptionIndex("");
-    return;
-  }
-
-
-  const overrides = {
-    value: subscriptions[0]?._price.toString(),
-    gasLimit: 90000,
-  };
-
-
-  const pendingSubscribe = await contract.subscribe(BigNumber.from(index), overrides);
-  const res = await pendingSubscribe.wait();
-  if (res.status) {
-    alert("Subscription subscribe successfully");
-    setSubscriptionIndex("");
-  }
-
-  } catch (err) {
-    if (err.code === 4001) {
-      alert("User denied purchase.");
+    const pendingCancel = await contract.cancelSubscriptions(BigNumber.from(index));
+    const res = await pendingCancel.wait();
+    if(res.status) {
+      alert("Subscription cancelled successfully")
       setSubscriptionIndex("");
-      //  setLoading(false);
     }
-  }
+ 
+    } catch (err) {
+      if (err.code === 4001) {
+        alert("some errro occured.");
+        setSubscriptionIndex("");
+        //  setLoading(false);
+      }
+    }
   }
   const symbol = localStorage.getItem("symbol");
   const availableSubscriptions =     subscriptions && subscriptions.length > 0 ? ( subscriptions.map((subscription)=>{
@@ -115,11 +111,11 @@ useEffect(() => {
             </li>
           </ul>
           <div className="mt-6 rounded-md shadow">
-          <ColoredButton onClick={()=>handleSubscribe(subscription?._index.toString())} style={{width:"55%"}} stylec="mx-4  my-4">
+          <ColoredButton onClick={()=>handelCancelSubscription(subscription?._index.toString())} style={{width:"55%"}} stylec="mx-4  my-4">
           {subscription?._index.toString() == subscriptionIndex  ? (
             <BeatLoader loading={subscription?._index.toString() == subscriptionIndex } />
           ) : (
-            <>SUBSCRIBE</>
+            <>Cancel Subscription</>
           )}
       </ColoredButton>
           </div>
@@ -128,14 +124,14 @@ useEffect(() => {
     </div>
     )
   })):(
-    <div className="text-2xl mt-3">NO Available Subscription...</div>
+    <div className="text-2xl mt-3">NO Available Purchesed Subscription...</div>
   );
-  
+
   return (
     <>
       <div className="container text-center">
-      <Header metamaskProvider={metamaskProvider} />{" "}
-      {/* <div className="flex justify-end pt-6 pr-6">
+        <Header metamaskProvider={metamaskProvider} />{" "}
+        {/* <div className="flex justify-end pt-6 pr-6">
         <button
           onClick={handleCreateSubscription}
           type="button"
@@ -144,23 +140,14 @@ useEffect(() => {
           Create Subscription
         </button>
       </div> */}
-      <div className="flex justify-center pt-6 pr-6">
-      <ColoredButton onClick={handlePurchesedSubscriptions} stylec="mx-4 my-4">
-        PURCHESED SUBSCRIPTIONS
-        </ColoredButton>
-        <ColoredButton onClick={handleMysubscriptionPlan} stylec="mx-4 my-4">
-        MY SUBSCRIPTION PLAN
-        </ColoredButton>
-        <ColoredButton onClick={handleCreateSubscription} stylec="mx-4 my-4">
-        CREATE SUBSCRIPTION
-        </ColoredButton>
-        </div>
         <div className="md:text-3xl sm:text-2xl text-xl font-Lulo my-3">
-        Subscribtions Plan List
+          Purchesed Subscribtions List
         </div>
         <div className="flex flex-wrap items-center justify-center">
-        {loading ? <BarLoader loading={loading} /> : availableSubscriptions}
-   </div>
+          {loading ? (
+            <BarLoader loading={loading} />
+          ) : availableSubscriptions}
+        </div>
       </div>
     </>
   );

@@ -23,6 +23,8 @@ import { useProvider } from "./web3/useProvider";
 import Web3Provider from "./web3/Web3Provider";
 import Subscriptions from "./pages/Subscriptions";
 import CreateSubscription from "./pages/CreateSubscription";
+import MySubscriptionPlan from "./pages/MySubscriptionPlan";
+import PurchesedSubscriptions from "./pages/PurchesedSubscriptions";
 
 export const WalletProviderContext = createContext({
   walletProvider: null,
@@ -120,22 +122,41 @@ function App({ metamaskProvider }) {
                 />
               }
             />
-            <Route 
-            path="/list-subscriptions"
-            element = {
-              <SecureRoute 
-              component = {Subscriptions}
-              metamaskProvider = {metamaskProvider}
-              />
-            }/>
-            <Route 
-            path="/create-subscription"
-            element = {
-              <SecureRoute 
-              component = {CreateSubscription}
-              metamaskProvider = {metamaskProvider}
-              />
-            }
+            <Route
+              path="/list-subscriptions"
+              element={
+                <SecureRoute
+                  component={Subscriptions}
+                  metamaskProvider={metamaskProvider}
+                />
+              }
+            />
+            <Route
+              path="/create-subscription"
+              element={
+                <SecureRoute
+                  component={CreateSubscription}
+                  metamaskProvider={metamaskProvider}
+                />
+              }
+            />
+            <Route
+              path="/my-subscription-plan"
+              element={
+                <SecureRoute
+                  component={MySubscriptionPlan}
+                  metamaskProvider={metamaskProvider}
+                />
+              }
+            />
+            <Route
+              path="/purchesed-subscriptions"
+              element={
+                <SecureRoute
+                  component={PurchesedSubscriptions}
+                  metamaskProvider={metamaskProvider}
+                />
+              }
             />
             <Route
               path="/wrong-network"

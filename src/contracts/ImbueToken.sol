@@ -138,7 +138,7 @@ contract ImbueToken {
     }
 
     function addSubscritpion(string memory name, string memory description, uint price  ) public {
-        require(!_subscritption_creator[msg.sender]._is_subscription_created,"Only you can create subscription plane at once");
+        require(!_subscritption_creator[msg.sender]._is_subscription_created,"You can only create subscription plane at once.");
         _subscritptions[_subscritption_count] = SubscritptionDetail(_subscritption_count, msg.sender, name,description, price);
         _subscritption_creator[msg.sender] = subscriptions_creator_map(_subscritption_count,true);
         _subscritption_count++;
@@ -158,5 +158,9 @@ contract ImbueToken {
     function isSubscriptionPurchesed(uint subscription_index) public view returns(bool){
         //require(!_purchased_persons[eventIndex][msg.sender], "error occured!");
         return _subscriber[subscription_index][msg.sender];
+    }
+
+    function cancelSubscriptions(uint subscription_index) public  {
+        _subscriber[subscription_index][msg.sender] = false;
     }
 }
