@@ -1,4 +1,5 @@
 import React from "react";
+import { BigNumber } from "ethers";
 export default function EventDescription(props) {
   const { event, stylec } = props;
   let date1;
@@ -18,7 +19,7 @@ export default function EventDescription(props) {
     "December",
   ];
   if (event !== null) {
-    const startDate = new Date(event._start.toNumber());
+    const startDate = new Date(BigNumber.from(event._start).toNumber());
     const month = monthNames[startDate.getMonth()];
     const day = startDate.getDate();
     const year = startDate.getFullYear();

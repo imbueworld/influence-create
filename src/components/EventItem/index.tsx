@@ -5,14 +5,7 @@ import { useContract } from "../../web3/useContract";
 import ColoredButton from "../ColoredButton";
 import { BeatLoader } from "react-spinners";
 import { getStreamStatus } from "../../utils/apiFactory";
-
-
-
-
 import { AiFillDollarCircle } from 'react-icons/ai';
-
-
-
 
 
 import yes from "./yes.png";
@@ -43,10 +36,9 @@ export default function EventItem({ event, metamaskProvider }) {
   const walletAddress = metamaskProvider.selectedAddress;
   const isCreator = BigNumber.from(walletAddress).eq(
     BigNumber.from(event._owner)
-
   );
 // alert(event._thumbnail)
-  const startDate = new Date(event._start.toNumber());
+  const startDate = new Date(BigNumber.from(event._start).toNumber());
   const month = monthNames[startDate.getMonth()];
   const day = startDate.getDate();
   const year = startDate.getFullYear();
@@ -105,17 +97,17 @@ export default function EventItem({ event, metamaskProvider }) {
     });
   }, []);
   function handleStartStream() {
-    navigate(`/start-stream/${eventId}`);
+    navigate(`/start-stream/${event.id}`);
   }
 
   function handleStartStreamObs() {
-    navigate(`/start-stream-0bs/${eventId}`);
+    navigate(`/start-stream-0bs/${event.id}`);
   }
   function handleJoinStream() {
-    navigate(`/join-stream/${eventId}`);
+    navigate(`/join-stream/${event.id}`);
   }
   function handlePurchaseEvent() {
-    navigate(`/purchase-event/${eventId}`);
+    navigate(`/purchase-event/${event.id}`);
   }
   if (deleted) return <></>;
   return (

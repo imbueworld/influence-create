@@ -1,7 +1,3 @@
-/**
- *Submitted for verification at kovan-optimistic.etherscan.io on 2022-07-11
-*/
-
 // SPDX-License-Identifier: MIT
 
 pragma solidity >=0.8.0 <0.9.0;
@@ -21,6 +17,7 @@ contract ImbueToken {
         string _description; // descriptiong about event...
         uint _price; // event's price
         string _thumbnail;
+        string _chainId;
         string _streamData;
     }
 
@@ -53,8 +50,8 @@ contract ImbueToken {
     event eventAdded(address who);
     event purchaseDone(bool);
 
-    function addEvent(string memory name, uint datetime,uint duration, string memory description, uint price,string memory streamId,string memory thumbnail, string memory streamData ) public {
-        _events[_event_count] = EventDetail(_event_count, msg.sender, name, datetime,duration, description, price, thumbnail,streamData);
+    function addEvent(string memory name, uint datetime,uint duration, string memory description, uint price,string memory streamId,string memory thumbnail,string memory chainId, string memory streamData ) public {
+        _events[_event_count] = EventDetail(_event_count, msg.sender, name, datetime,duration, description, price, thumbnail, chainId,streamData);
         _event_count++;
         _thumbnails[streamId] = thumbnail;
         emit eventAdded(msg.sender);

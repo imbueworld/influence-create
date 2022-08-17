@@ -25,6 +25,9 @@ import Subscriptions from "./pages/Subscriptions";
 import CreateSubscription from "./pages/CreateSubscription";
 import MySubscriptionPlan from "./pages/MySubscriptionPlan";
 import PurchesedSubscriptions from "./pages/PurchesedSubscriptions";
+import { EventsStoreProvider } from "./utils/events.store"
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const WalletProviderContext = createContext({
   walletProvider: null,
@@ -43,6 +46,7 @@ function App({ metamaskProvider }) {
     <div className="container text-center m-auto font-Lulo">
       <HashRouter>
         <Web3Provider>
+        <EventsStoreProvider>
           <Routes>
             <Route
               path="/"
@@ -164,8 +168,10 @@ function App({ metamaskProvider }) {
             />
             <Route path="/test" element={<Test />} />
           </Routes>
+          </EventsStoreProvider>
         </Web3Provider>
       </HashRouter>
+      <ToastContainer/>
     </div>
   );
 }

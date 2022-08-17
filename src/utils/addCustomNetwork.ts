@@ -72,7 +72,7 @@ const Arbitrum_Mainnet = {
 
 const Polygon_Testnet = {
   chainId: "0x13881",
-  chainName: "Arbitrum Testnet Rinkeby",
+  chainName: "Polygon Testnet",
   nativeCurrency: {
     name: "Polygon  MATIC",
     symbol: "MATIC",
@@ -114,12 +114,13 @@ export const getNetwork = (chainId) => {
   return network;
 };
 
+
 export async function switchNetwork(metamaskProvider, chainIdToSwith) {
   if (typeof window !== "undefined") {
     let networkToAdd = getNetwork(chainIdToSwith);
     const params = [networkToAdd];
     console.log(params);
-    return await metamaskProvider.request({
+    return  metamaskProvider.request({
       method: "wallet_addEthereumChain", //wallet_switchEthereumChain
       params,
     });

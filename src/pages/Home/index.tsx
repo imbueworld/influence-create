@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import  { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { BeatLoader } from "react-spinners";
 import { BigNumber } from "ethers";
@@ -10,13 +10,16 @@ import ColoredButton from "../../components/ColoredButton";
 import { useContract } from "../../web3/useContract";
 import WalletSelector from "../../components/WalletSelector";
 import { useProvider } from "../../web3/useProvider";
+import {useGetEvents} from "./useGetEvents"
+
+
 
 export default function Home({ metamaskProvider }) {
   const [loading, setLoading] = useState(false);
   const [events, setEvents] = useState(null);
   const [address, setAddress] = useState(null);
   const [installedMetamask, setInstalledMetamask] = useState(true);
-
+  const  { response, error, loading1 } = useGetEvents({walletAddress:address});
   const { setProvider, getProvider, connectWallet, getAccounts, isConnected } =
     useProvider();
   const { getContract } = useContract();
@@ -77,6 +80,7 @@ export default function Home({ metamaskProvider }) {
         .getUpcomingEvents(walletAddress, BigNumber.from(Date.now())) //
         .then((events) => {
           setEvents(events);
+          console.log("events-----------events",events);
           setLoading(false);
         })
         .catch();
@@ -100,6 +104,8 @@ export default function Home({ metamaskProvider }) {
   function handleCreateSubscription() {
     navigate("/create-subscription");
   }
+  // console.log(
+  //   response)
   
   const homeData = address ? (
     <>
@@ -126,10 +132,10 @@ export default function Home({ metamaskProvider }) {
         </ColoredButton>
       </div>
       <div className="grid grid-flow-row items-center justify-items-center">
-        {events && events.length > 0 ? (
-          events.map((event) => (
+        {response && response.length > 0 ? (
+          response?.map((event) => ( 
             <EventItem
-              key={event["_index"]}
+              key={event["id"]}
               event={Object.assign(event)}
               metamaskProvider={metamaskProvider}
             />

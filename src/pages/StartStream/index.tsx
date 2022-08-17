@@ -2,8 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { detect } from "detect-browser";
 
- 
-
 import ColoredButton from "../../components/ColoredButton";
 import Header from "../../components/Header";
 import { useContract } from "../../web3/useContract";
@@ -19,8 +17,12 @@ import "./ReplaceableMediaStream";
 // import new
 
 import Webcam from "react-webcam";
-import { error } from "console";
+
+import {useEventsStoreContext} from "./../../utils/events.store"
+
 const CryptoJS = require("crypto-js");
+
+
 
 
 const CAMERA_CONSTRAINTS = {
@@ -29,6 +31,8 @@ const CAMERA_CONSTRAINTS = {
   facingMode: "user"
 };
 export default function StartStream({ metamaskProvider }) {
+
+  const { ceratorEventList, viewerEventList,setCeratorEventList,setViewerEventList } = useEventsStoreContext();
 
   const { eventId } = useParams();
 
@@ -63,15 +67,27 @@ const [cameraconst,setcameraConst] = useState({ audio: true,
   const navigate = useNavigate();
 
   const { getContract } = useContract();
+
+
+useEffect(()=>{
+  if(ceratorEventList.length===0) {
+    navigate("/");
+  }
+},[]);
+
+
+
+
+
   useEffect(() => {
+    console.log("ceratorEventList",ceratorEventList);
     async function fetchData() {
       try {
-        
-    
       setLoading(true);
       await enableCamera();
       const contract = await getContract();
-      const event = await contract._events(BigNumber.from(eventId));
+      // const event = await contract._events(BigNumber.from(eventId));
+      const event = ceratorEventList.find(o => o.id === eventId);
       setEvent(event);
 
       let streamData = event._streamData;

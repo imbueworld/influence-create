@@ -3,11 +3,17 @@ import { BigNumber } from "ethers";
 import { BarLoader } from "react-spinners";
 
 import { useContract } from "../../web3/useContract";
+import {useViewEventList} from "./useViewEventList"
+
+
 
 import EventItem from "../../components/EventItem";
 import Header from "../../components/Header";
 // import { EventItem, Header } from "../../components";
 export default function ListEvent({ metamaskProvider }) {
+
+
+
   // const contract = getContract(metamaskProvider);
 
   // const [contract, setContract] = useState(null);
@@ -27,6 +33,8 @@ export default function ListEvent({ metamaskProvider }) {
     });
   }, []);
 
+  const  { response, error, loading1 } = useViewEventList();
+
   function handleGetAvailableEvents() {
     setLoading(true);
     getContract().then((contract) => {
@@ -44,10 +52,10 @@ export default function ListEvent({ metamaskProvider }) {
     });
   }
   const availableEvents =
-    events && events.length > 0 ? (
-      events.map((event) => (
+  response && response.length > 0 ? (
+      response.map((event) => (
         <EventItem
-          key={event["_index"]}
+          key={event["id"]}
           event={Object.assign(event)}
           metamaskProvider={metamaskProvider}
         />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useContract } from "../../web3/useContract";
 import { BigNumber } from "ethers";
@@ -16,10 +16,17 @@ import nftabi from "./nftAbi.json";
 import axios from "axios";
 import ColoredButton from "../../components/ColoredButton";
 import { FaDiscord } from "react-icons/fa";
+import { useEventsStoreContext } from "./../../utils/events.store";
+
+import {apiUrls} from './../../utils/apiUrsl';
+
+
 
 const client = ipfsHttpClient({ url: "https://ipfs.infura.io:5001/api/v0" });
 
 export default function JoinStream({ metamaskProvider }) {
+  const { viewerEventList } = useEventsStoreContext();
+
   const { eventId } = useParams();
 
   const walletAddress = metamaskProvider.selectedAddress;
@@ -38,14 +45,66 @@ export default function JoinStream({ metamaskProvider }) {
   const playerRef = useRef(null);
   const navigate = useNavigate();
   const { getContract } = useContract();
+
+  useEffect(() => {
+    if (viewerEventList.length === 0) {
+      navigate("/list-event");
+    }
+  }, []);
+
+
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
       const contract = await getContract();
-      const purchased = await contract.isPurchased(BigNumber.from(eventId));
-      const event = await contract._events(BigNumber.from(eventId));
+      const event = viewerEventList.find((o) => o.id === eventId);
+      console.log("------------e", event);
+      setEvent(event);
+
+
+
+
+
+      const accarr = await metamaskProvider.request({
+        method: "eth_requestAccounts",
+      });
+
+      let headersList = {
+        Accept: "*/*",
+        "Content-Type": "application/json",
+      };
+
+      let bodyContent = JSON.stringify({
+        eventIndeses: event._eventIndexes,
+        walletAddress: accarr[0],
+      });
+
+      let response = await axios.request({
+        url: `${apiUrls.eventPurchased}`,
+        method: "POST",
+        headers: headersList,
+        data: bodyContent,
+      });
+      console.log(response.data.isPurchased);
+
+      const isPurchasedAnyBlockchain = response.data.isPurchased;
+
+
+
+
+
+
+
+
+
+
+
+
+
+      // const purchased = await contract.isPurchased(BigNumber.from(eventId));
+      // const event = await contract._events(BigNumber.from(eventId));
       if (!(parseInt(BigNumber.from(event._price).toString(), 10) === 0)) {
-        if (!purchased) {
+        if (!isPurchasedAnyBlockchain) {
           alert(
             "You didn`t purchase this event.Please purchase and try again."
           );
@@ -54,7 +113,7 @@ export default function JoinStream({ metamaskProvider }) {
         }
       }
 
-      setEvent(event);
+      // setEvent(event);
       let streamData = event._streamData;
       streamData = CryptoJS.AES.decrypt(streamData, event._name).toString(
         CryptoJS.enc.Utf8
