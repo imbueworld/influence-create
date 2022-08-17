@@ -4,13 +4,14 @@ import { switchNetwork } from "../../utils/addCustomNetwork";
 import Optimistic from "./optimistic.svg";
 import Harmony from "./harmony.svg";
 import Polygon from "./polygon.svg";
-import Arbitrum_logo from "./Arbitrum_logo.jpeg"
-import OptimisticMain from './optimism.svg'
+import Arbitrum_logo from "./Arbitrum_logo.jpeg";
+import OptimisticMain from "./optimism.svg";
 import { useNavigate } from "react-router-dom";
 import { BigNumber } from "ethers";
 import { isContractDeployed } from "../../web3/useContract";
 import { ethers } from "ethers";
-export default function NetworkSelector({ metamaskProvider }) {
+export default function NetworkSelector({ metamaskProvider, indexes ,  selectedOption,setSelectedOption}) {
+  const [filterData,setFilterData] = useState([]);
   const data = [
     {
       value: "0x45",
@@ -23,8 +24,8 @@ export default function NetworkSelector({ metamaskProvider }) {
       icon: <img src={OptimisticMain} width="45" height="45" alt=""></img>,
     },
     {
-      value: "0x6357D2E0",
-      text: "Harmony-Test",
+      value: "0x0004",
+      text: "Eth-Rinkeby",
       icon: <img src={Harmony} width="45" height="45" alt=""></img>,
     },
     {
@@ -54,7 +55,20 @@ export default function NetworkSelector({ metamaskProvider }) {
     },
   ];
 
-  const [selectedOption, setSelectedOption] = useState();
+  useEffect(() => {
+    if(indexes)   {
+    let chainIds = indexes._eventIndexes.map((el) => el.chainId);
+    console.log(chainIds);
+
+    let fildterData = data.filter((el) => {
+      return chainIds.some((chainId) => chainId.toLowerCase() === el.value.toLowerCase());
+    });
+    console.log("fildterData", fildterData);
+    setFilterData(fildterData);
+  }
+  }, [indexes]);
+
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -66,7 +80,7 @@ export default function NetworkSelector({ metamaskProvider }) {
     provider._networkPromise.then((network) => {
       data.forEach((option) => {
         if (BigNumber.from(network.chainId).eq(BigNumber.from(option.value))) {
-          setSelectedOption(option);
+          // setSelectedOption(option);
           return;
         }
       });
@@ -76,7 +90,7 @@ export default function NetworkSelector({ metamaskProvider }) {
         setNetwork(_chainId)
       );
     };
-  }, []);
+  }, [filterData]);
 
   const setNetwork = (chainId) => {
     data.forEach((option) => {
@@ -95,7 +109,10 @@ export default function NetworkSelector({ metamaskProvider }) {
       return;
     }
     try {
-      const switchNetworkRespose = await  switchNetwork(metamaskProvider, e.value);
+      const switchNetworkRespose = await switchNetwork(
+        metamaskProvider,
+        e.value
+      );
       console.log(switchNetworkRespose);
       // console.log("data_switch",data_switch)
       console.log(window.location.href.endsWith("wrong-network"));
@@ -106,18 +123,13 @@ export default function NetworkSelector({ metamaskProvider }) {
         window.location.reload();
         return;
       }
-      // setSelectedOption(e);
-      
+      setSelectedOption(e);
     } catch (error) {
       if (error.code === 4001) {
         setSelectedOption(null);
         console.log("denied");
       }
     }
-
-
-  
-   
   };
 
   const customSytles = {
@@ -146,8 +158,8 @@ export default function NetworkSelector({ metamaskProvider }) {
         className="text-sm"
         styles={customSytles}
         placeholder="Select Network"
-        value={selectedOption}
-        options={data}
+        // value={selectedOption}
+        options={filterData}
         onChange={handleChange}
         getOptionLabel={(e) => (
           <div style={{ display: "flex", alignItems: "center" }}>

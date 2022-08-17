@@ -1,7 +1,3 @@
-/**
- *Submitted for verification at kovan-optimistic.etherscan.io on 2022-07-11
-*/
-
 // SPDX-License-Identifier: MIT
 
 pragma solidity >=0.8.0 <0.9.0;
@@ -21,6 +17,7 @@ contract ImbueToken {
         string _description; // descriptiong about event...
         uint _price; // event's price
         string _thumbnail;
+        string _chainId;
         string _streamData;
     }
 
@@ -53,8 +50,8 @@ contract ImbueToken {
     event eventAdded(address who);
     event purchaseDone(bool);
 
-    function addEvent(string memory name, uint datetime,uint duration, string memory description, uint price,string memory streamId,string memory thumbnail, string memory streamData ) public {
-        _events[_event_count] = EventDetail(_event_count, msg.sender, name, datetime,duration, description, price, thumbnail,streamData);
+    function addEvent(string memory name, uint datetime,uint duration, string memory description, uint price,string memory streamId,string memory thumbnail,string memory chainId, string memory streamData ) public {
+        _events[_event_count] = EventDetail(_event_count, msg.sender, name, datetime,duration, description, price, thumbnail, chainId,streamData);
         _event_count++;
         _thumbnails[streamId] = thumbnail;
         emit eventAdded(msg.sender);
@@ -138,7 +135,7 @@ contract ImbueToken {
     }
 
     function addSubscritpion(string memory name, string memory description, uint price  ) public {
-        require(!_subscritption_creator[msg.sender]._is_subscription_created,"Only you can create subscription plane at once");
+        require(!_subscritption_creator[msg.sender]._is_subscription_created,"You can only create subscription plane at once.");
         _subscritptions[_subscritption_count] = SubscritptionDetail(_subscritption_count, msg.sender, name,description, price);
         _subscritption_creator[msg.sender] = subscriptions_creator_map(_subscritption_count,true);
         _subscritption_count++;
@@ -158,5 +155,9 @@ contract ImbueToken {
     function isSubscriptionPurchesed(uint subscription_index) public view returns(bool){
         //require(!_purchased_persons[eventIndex][msg.sender], "error occured!");
         return _subscriber[subscription_index][msg.sender];
+    }
+
+    function cancelSubscriptions(uint subscription_index) public  {
+        _subscriber[subscription_index][msg.sender] = false;
     }
 }

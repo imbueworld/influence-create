@@ -9,6 +9,8 @@ import EventDescription from "../../components/EventDescription";
 import { deleteStream, getStreamStatus } from "../../utils/apiFactory";
 import ChatContainer from "../../components/ChatContainer";
 
+import {useEventsStoreContext} from "./../../utils/events.store"
+
 const CryptoJS = require("crypto-js");
 
 export default function StartStreamObs({ metamaskProvider }) {
@@ -23,17 +25,27 @@ export default function StartStreamObs({ metamaskProvider }) {
   const [loading, setLoading] = useState(false);
   const walletAddress = metamaskProvider.selectedAddress;
 
+  const { ceratorEventList, viewerEventList,setCeratorEventList,setViewerEventList } = useEventsStoreContext();
+
   const timer = useRef(null);
   const navigate = useNavigate();
 
   const { getContract } = useContract();
+
+  useEffect(()=>{
+    if(ceratorEventList.length===0) {
+      navigate("/");
+    }
+  },[]);
+
   useEffect(() => {
     setStreaming(true);
     async function fetchData() {
       try {
         setLoading(true);
         const contract = await getContract();
-        const event = await contract._events(BigNumber.from(eventId));
+        // const event = await contract._events(BigNumber.from(eventId));
+        const event = ceratorEventList.find(o => o.id === eventId);
         setEvent(event);
 
         let streamData = event._streamData;
