@@ -8,6 +8,7 @@ import React, {
 import { Routes, Route, HashRouter } from "react-router-dom";
 import "./App.css";
 import CreateEvent from "./pages/CreateEvent";
+import CreateStoredEvent from "./pages/CreateStoredEvent";
 import Home from "./pages/Home";
 import StartStream from "./pages/StartStream";
 import StartStreamObs from "./pages/StartStreamObs";
@@ -57,6 +58,15 @@ function App({ metamaskProvider }) {
               element={
                 <SecureRoute
                   component={CreateEvent}
+                  metamaskProvider={metamaskProvider}
+                />
+              }
+            />
+                <Route
+              path="/create-event-st"
+              element={
+                <SecureRoute
+                  component={CreateStoredEvent}
                   metamaskProvider={metamaskProvider}
                 />
               }

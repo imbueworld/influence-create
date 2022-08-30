@@ -32,7 +32,7 @@ const CAMERA_CONSTRAINTS = {
 };
 export default function StartStream({ metamaskProvider }) {
 
-  const { ceratorEventList, viewerEventList,setCeratorEventList,setViewerEventList } = useEventsStoreContext();
+  const { ceratorEventList } = useEventsStoreContext();
 
   const { eventId } = useParams();
 

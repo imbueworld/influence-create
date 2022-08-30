@@ -81,7 +81,7 @@ export const useProvider = () => {
   async function setProvider(metamask?: boolean) {
     isMetamask = metamask;
     await detectProvider();
-    console.log(provider);
+  
   }
 
   async function connectWallet() {

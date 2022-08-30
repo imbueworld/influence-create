@@ -3,13 +3,13 @@ import { useState, useEffect } from "react";
 const EventsStoreContext = createContext(null);
 
 const EventsStoreProvider = ({ children }) => {
-  const [ceratorEventList, setCeratorEventList] = useState([]);
+  const [ceratorEventList, setCreatorEventList] = useState([]);
   const [viewerEventList, setViewerEventList] = useState([]);
 
   useEffect(() => {}, []);
 
   return (
-    <EventsStoreContext.Provider value={{ ceratorEventList, viewerEventList,setCeratorEventList,setViewerEventList }}>
+    <EventsStoreContext.Provider value={{ ceratorEventList, viewerEventList,setCreatorEventList,setViewerEventList }}>
       {children}
     </EventsStoreContext.Provider>
   );
