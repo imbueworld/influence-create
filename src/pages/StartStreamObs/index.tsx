@@ -25,7 +25,7 @@ export default function StartStreamObs({ metamaskProvider }) {
   const [loading, setLoading] = useState(false);
   const walletAddress = metamaskProvider.selectedAddress;
 
-  const { ceratorEventList, viewerEventList,setCeratorEventList,setViewerEventList } = useEventsStoreContext();
+  const { ceratorEventList } = useEventsStoreContext();
 
   const timer = useRef(null);
   const navigate = useNavigate();

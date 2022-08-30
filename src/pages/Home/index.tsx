@@ -19,7 +19,7 @@ export default function Home({ metamaskProvider }) {
   const [events, setEvents] = useState(null);
   const [address, setAddress] = useState(null);
   const [installedMetamask, setInstalledMetamask] = useState(true);
-  const  { response, error, loading1 } = useGetEvents({walletAddress:address});
+  const  { response, error, loading1 } = useGetEvents();
   const { setProvider, getProvider, connectWallet, getAccounts, isConnected } =
     useProvider();
   const { getContract } = useContract();
@@ -80,7 +80,7 @@ export default function Home({ metamaskProvider }) {
         .getUpcomingEvents(walletAddress, BigNumber.from(Date.now())) //
         .then((events) => {
           setEvents(events);
-          console.log("events-----------events",events);
+          // console.log("events-----------events",events);
           setLoading(false);
         })
         .catch();

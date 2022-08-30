@@ -22,7 +22,7 @@ const useViewEventList = (): { response: any; error: any; loading1: any } => {
         setResponse(res.data.data);
         setViewerEventList(res.data.data);
         console.log(response);
-        console.log(res.data, "res.data");
+        // console.log(res.data, "res.data");
       })
       .catch((err) => {
         setError(err);

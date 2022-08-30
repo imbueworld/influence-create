@@ -105,6 +105,9 @@ const useCreateEvent = ({ metamaskProvider }) => {
   });
   useEffect(() => {
     // console.log("selectedOptions", selectedOptions);
+    if (sessionStorage.getItem("eventsDataChainId") !== null) {
+      navigate("/create-event-st");
+    }
   }, []);
 
   useEffect(() => {
@@ -130,85 +133,85 @@ const useCreateEvent = ({ metamaskProvider }) => {
     })();
   }, []);
 
-  useEffect(() => {
-    const fun = async () => {
-      // console.log(JSON.parse(window.localStorage.getItem("myObject")));
+  // useEffect(() => {
+  //   const fun = async () => {
+  //     // console.log(JSON.parse(window.localStorage.getItem("myObject")));
 
-      if (sessionStorage.getItem("eventsDataChainId") !== null) {
-        let storageDataEvents = await JSON.parse(
-          sessionStorage.getItem("eventsDataChainId")
-        );
-        console.log("storageDataEvents", storageDataEvents);
-        let chainId_n = await metamaskProvider.request({
-          method: "eth_chainId",
-        });
-        chainId_n = parseInt(chainId_n, 16);
-        chainId_n = "0x" + chainId_n.toString(16).toUpperCase();
-        const filterChainIdData = await storageDataEvents.eventsData.filter(
-          (el) => el.chainId == chainId_n
-        );
-        console.log(filterChainIdData[0].streamStorageData.name);
-        const contract = await getContract();
-        const pendingAddEvent = await contract.addEvent(
-          filterChainIdData[0].streamStorageData.name,
-          filterChainIdData[0].streamStorageData.startDate,
-          filterChainIdData[0].streamStorageData.durationData,
-          filterChainIdData[0].streamStorageData.description,
-          filterChainIdData[0].streamStorageData.price,
-          filterChainIdData[0].streamStorageData.id,
-          filterChainIdData[0].streamStorageData.url,
-          chainId_n,
-          filterChainIdData[0].streamStorageData.streamddata
-        );
-        const res = await pendingAddEvent.wait();
-        if (res.status) {
-         
-          // navigate("/");
-          const filterChainsIdData = storageDataEvents.eventsData.filter(
-            (el) => el.chainId !== chainId_n
-          );
-          switchNetwork(metamaskProvider, filterChainsIdData[0].chainId);
-          if (filterChainsIdData.length != 0) {
-            window.sessionStorage.setItem(
-              "eventsDataChainId",
-              JSON.stringify({ eventsData: filterChainsIdData })
-            );
-            // switchNetwork(metamaskProvider, filterChainsIdData[0].chainId);
-          } else {
-            window.sessionStorage.removeItem("eventsDataChainId");
-            navigate("/");
-          }
-        }
-      }
+  //     if (sessionStorage.getItem("eventsDataChainId") !== null) {
+  //       let storageDataEvents = await JSON.parse(
+  //         sessionStorage.getItem("eventsDataChainId")
+  //       );
+  //       console.log("storageDataEvents", storageDataEvents);
+  //       let chainId_n = await metamaskProvider.request({
+  //         method: "eth_chainId",
+  //       });
+  //       chainId_n = parseInt(chainId_n, 16);
+  //       chainId_n = "0x" + chainId_n.toString(16).toUpperCase();
+  //       const filterChainIdData = await storageDataEvents.eventsData.filter(
+  //         (el) => el.chainId == chainId_n
+  //       );
+  //       console.log(filterChainIdData[0].streamStorageData.name);
+  //       const contract = await getContract();
+  //       const pendingAddEvent = await contract.addEvent(
+  //         filterChainIdData[0].streamStorageData.name,
+  //         filterChainIdData[0].streamStorageData.startDate,
+  //         filterChainIdData[0].streamStorageData.durationData,
+  //         filterChainIdData[0].streamStorageData.description,
+  //         filterChainIdData[0].streamStorageData.price,
+  //         filterChainIdData[0].streamStorageData.id,
+  //         filterChainIdData[0].streamStorageData.url,
+  //         chainId_n,
+  //         filterChainIdData[0].streamStorageData.streamddata
+  //       );
+  //       const res = await pendingAddEvent.wait();
+  //       if (res.status) {
 
-      // console.log(JSON.parse(window.localStorage.getItem("myObject")));
-      // const mydata = JSON.parse(window.localStorage.getItem("myObject"));
-      // window.localStorage.removeItem("myObject");
-      // let chainId = await metamaskProvider.request({ method: "eth_chainId" });
-      // chainId = parseInt(chainId, 16);
-      // chainId = "0x" + chainId.toString(16).toUpperCase();
-      // if (mydata.isHave) {
-      //   const contract = await getContract();
-      //   const pendingAddEvent = await contract.addEvent(
-      //     mydata.streamStorageData.name,
-      //     mydata.streamStorageData.startDate,
-      //     mydata.streamStorageData.durationData,
-      //     mydata.streamStorageData.description,
-      //     mydata.streamStorageData.price,
-      //     mydata.streamStorageData.id,
-      //     mydata.streamStorageData.url,
-      //     chainId,
-      //     mydata.streamStorageData.streamddata
-      //   );
-      //   const res = await pendingAddEvent.wait();
+  //         // navigate("/");
+  //         const filterChainsIdData = storageDataEvents.eventsData.filter(
+  //           (el) => el.chainId !== chainId_n
+  //         );
+  //         switchNetwork(metamaskProvider, filterChainsIdData[0].chainId);
+  //         if (filterChainsIdData.length != 0) {
+  //           window.sessionStorage.setItem(
+  //             "eventsDataChainId",
+  //             JSON.stringify({ eventsData: filterChainsIdData })
+  //           );
+  //           // switchNetwork(metamaskProvider, filterChainsIdData[0].chainId);
+  //         } else {
+  //           window.sessionStorage.removeItem("eventsDataChainId");
+  //           navigate("/");
+  //         }
+  //       }
+  //     }
 
-      //   navigate("/");
-      // }
-    };
-    fun().then().catch((err)=>{
-      window.sessionStorage.removeItem("eventsDataChainId");
-    });
-  }, []);
+  //     // console.log(JSON.parse(window.localStorage.getItem("myObject")));
+  //     // const mydata = JSON.parse(window.localStorage.getItem("myObject"));
+  //     // window.localStorage.removeItem("myObject");
+  //     // let chainId = await metamaskProvider.request({ method: "eth_chainId" });
+  //     // chainId = parseInt(chainId, 16);
+  //     // chainId = "0x" + chainId.toString(16).toUpperCase();
+  //     // if (mydata.isHave) {
+  //     //   const contract = await getContract();
+  //     //   const pendingAddEvent = await contract.addEvent(
+  //     //     mydata.streamStorageData.name,
+  //     //     mydata.streamStorageData.startDate,
+  //     //     mydata.streamStorageData.durationData,
+  //     //     mydata.streamStorageData.description,
+  //     //     mydata.streamStorageData.price,
+  //     //     mydata.streamStorageData.id,
+  //     //     mydata.streamStorageData.url,
+  //     //     chainId,
+  //     //     mydata.streamStorageData.streamddata
+  //     //   );
+  //     //   const res = await pendingAddEvent.wait();
+
+  //     //   navigate("/");
+  //     // }
+  //   };
+  //   fun().then().catch((err)=>{
+  //     window.sessionStorage.removeItem("eventsDataChainId");
+  //   });
+  // }, []);
 
   const { name, desc, start_date, price } = formData;
   const onChange = (e) => {
@@ -226,7 +229,8 @@ const useCreateEvent = ({ metamaskProvider }) => {
 
   async function handleCreateEvent(e) {
     e.preventDefault();
-    console.log("selectedOptions", selectedOptions);
+    // console.log("selectedOptions", selectedOptions);
+    window.sessionStorage.removeItem("eventsDataChainId");
     setLoading(true);
 
     // debugger;
