@@ -56,7 +56,7 @@ export default function ServiceProfile({ metamaskProvider, accounts }) {
   //       {
   //         headers: {
   //           Authorization:
-  //             "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDdjMDgzYWU3M0U4MTMwNTY5NzdDQ0FCNjg1NUUxZjkzNjg4ZUI1MzMiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2NDUxODU1OTA0OCwibmFtZSI6IklNQlVFIn0.v1ajQ-rjR4clMFCdISZM06Fr7zmab4I_Fj9FjJbCHKc",
+  //             "Bearer ",
   //           "Content-Type": "multipart/form-data",
   //         },
   //       }
@@ -121,7 +121,7 @@ export default function ServiceProfile({ metamaskProvider, accounts }) {
           {
             headers: {
               Authorization:
-                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDdjMDgzYWU3M0U4MTMwNTY5NzdDQ0FCNjg1NUUxZjkzNjg4ZUI1MzMiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY2NDUxODU1OTA0OCwibmFtZSI6IklNQlVFIn0.v1ajQ-rjR4clMFCdISZM06Fr7zmab4I_Fj9FjJbCHKc",
+                "Bearer ",
               "Content-Type": "multipart/form-data",
             },
           }
