@@ -1,0 +1,46 @@
+.service-header {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.service-wallet-balance {
+    padding-bottom: 80px;
+    /* display: flex; */
+    /* padding-left: 64%; */
+}
+
+.paraSize {
+    font-family: 'Timmana';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 17px;
+    line-height: 28px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #242429;
+}
+
+.paraLocation {
+    font-family: 'Timmana';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 28px;
+    color: #FFFFFF;
+}
+
+.text-black {
+    color: black !important;
+}
+
+/* .service-discord1 {
+    content: '';
+    position: relative;
+    left: 792px;
+    font-size: 40px;
+    color: #ffffff;
+    display: inline-block;
+    top: -19px;
+}
+ */

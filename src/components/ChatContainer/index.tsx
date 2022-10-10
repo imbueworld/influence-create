@@ -15,6 +15,9 @@ export default function ChatContainer({ username, room, handler }) {
   const feedback = useRef(null);
   const container = useRef(null);
 
+
+  const Draggable1: any = Draggable;
+
   useEffect(() => {
     async function fetchData() {
       console.log(socket.current);
@@ -74,7 +77,8 @@ export default function ChatContainer({ username, room, handler }) {
 // alert(window.screen.width<=640)
 
   return (
-    <Draggable nodeRef={container}>
+    <>
+    <Draggable1 nodeRef={container}>
 
       <div
         ref={container}
@@ -117,6 +121,7 @@ export default function ChatContainer({ username, room, handler }) {
           </button>
         </form>
       </div>
-     </Draggable>
+     </Draggable1>
+     </>
   );
 }

@@ -1,0 +1,20 @@
+/* .picture-upload{
+    background: #E5E5E5;
+    border-radius: 47px;
+    width: 100%;
+    min-height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+} */
+
+@media screen and (max-width: 500px) {
+    .service-profile {
+        flex-direction: column;
+    }
+
+    .service-profile>div {
+        padding: 0%;
+    }
+}

@@ -1,0 +1,198 @@
+[
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "_GymName",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string[]",
+        "name": "_GymLocations",
+        "type": "string[]"
+      }
+    ],
+    "name": "eSetGymAddress",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "_user",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "_GymName",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "_Genre",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "_Discription",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "_WebsiteLink",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "_twitter",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "_instagram",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "_OtherLink",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_MemberShipPrice",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint128",
+        "name": "_MobileNumber",
+        "type": "uint128"
+      }
+    ],
+    "name": "eSetGymDetails",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "_GymName",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string[]",
+        "name": "_ImageUrl",
+        "type": "string[]"
+      }
+    ],
+    "name": "eSetImageUrl",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      { "internalType": "string", "name": "_GymAddress", "type": "string" }
+    ],
+    "name": "SetGymAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "string", "name": "_GymName", "type": "string" },
+      { "internalType": "string", "name": "_Genre", "type": "string" },
+      { "internalType": "string", "name": "_Discription", "type": "string" },
+      { "internalType": "string", "name": "_WebsiteLink", "type": "string" },
+      { "internalType": "string", "name": "_twitter", "type": "string" },
+      { "internalType": "string", "name": "_instagram", "type": "string" },
+      { "internalType": "string", "name": "_OtherLink", "type": "string" },
+      {
+        "internalType": "uint256",
+        "name": "_MemberShipPrice",
+        "type": "uint256"
+      },
+      { "internalType": "uint128", "name": "_MobileNumber", "type": "uint128" }
+    ],
+    "name": "SetGymDetails",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "string", "name": "_ImageUrl", "type": "string" }
+    ],
+    "name": "SetImageUrl",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_user", "type": "address" }
+    ],
+    "name": "ViewDescription",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "string", "name": "GymName", "type": "string" },
+          { "internalType": "string", "name": "Genre", "type": "string" },
+          { "internalType": "string", "name": "Discription", "type": "string" },
+          { "internalType": "string", "name": "WebsiteLink", "type": "string" },
+          { "internalType": "string", "name": "twitter", "type": "string" },
+          { "internalType": "string", "name": "instagram", "type": "string" },
+          { "internalType": "string", "name": "otherLink", "type": "string" },
+          {
+            "internalType": "uint256",
+            "name": "MemberShipPrice",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint128",
+            "name": "MobileNumber",
+            "type": "uint128"
+          }
+        ],
+        "internalType": "struct IMBUE_GymProfileSetUp.GymDetailsStruct",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_user", "type": "address" }
+    ],
+    "name": "ViewLocations",
+    "outputs": [{ "internalType": "string[]", "name": "", "type": "string[]" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_user", "type": "address" }
+    ],
+    "name": "getImageUrl",
+    "outputs": [{ "internalType": "string[]", "name": "", "type": "string[]" }],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

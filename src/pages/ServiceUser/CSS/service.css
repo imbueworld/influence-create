@@ -1,0 +1,28 @@
+.mapOverviewClassList {
+    overflow: auto;
+}
+
+.mapOverviewClassList::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.mapOverviewClassList {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.mapOverviewSearchBar>img {
+    /* position: absolute; */
+    margin-left: -13%;
+}
+
+.mapOverviewSearchBar>input {
+    all: unset;
+    background-color: white;
+    border-radius: 47px;
+    padding: 12px 6px;
+    width: 100%;
+}

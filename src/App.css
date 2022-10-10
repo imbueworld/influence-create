@@ -1,12 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Timmana&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url("~leaflet/dist/leaflet.css");
+
+
 #root {
   background: linear-gradient(153.29deg, #ffffff 16.74%, #ffe6eb 115.98%);
   min-height: 100vh;
 }
+
 @font-face {
   font-family: "LuloCleanW01_One";
-  src: url("./assets/font/Lulo-Clean-W01-One.woff2") format("woff2");
+  src: local('neo-latina'),url("./assets/font/Lulo-Clean-W01-One.woff2") format("woff2");
 }
+
 /* "//db.onlinewebfonts.com/t/116d187134420de5733c7c45bbc80c46.woff2 */
 .font-Lulo {
   font-family: "LuloCleanW01_One";
+}
+
+.font-Timmana {
+  font-family: "Timmana";
+}
+
+.font-Poppins {
+  font-family: 'Poppins', sans-serif;
+}
+
+/* .leaflet-container {
+  width: 80wh; 
+  height: 50vh;
+} */
+.leaflet-container {
+  height: 70vh;
+  min-height: 400px;
+  width: 80%;
+  min-width: 500px;
+  margin: 0 auto;
+  border-radius: 47px;
+}
+
+.react-responsive-modal-modal {
+  padding: 0px !important;
+  border-radius: 47px;
+}
+
+.customOverlay {
+
+  background: rgba(196, 196, 196, 0.5);
+}
+
+.react-responsive-modal-containerCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+
+/* div > .customOverlay { 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+ */
+
+.customModal {
+  background: #000000 !important;
+  color: #ffffff;
+  max-width: 400px !important;
+  width: 100%;
+  align-items: center;
+  display: flex !important;
+  flex-direction: column;
+  min-height: 238px !important;
+  justify-content: center;
+}
+.geosearch.leaflet-bar.leaflet-control.leaflet-control-geosearch.leaflet-geosearch-button{
+  position: absolute ;
+  top: 54px;
+  text-align: center;
+  margin: 0;
+  left: 759px ;
+}
+
+.geosearch.leaflet-bar.leaflet-control.leaflet-control-geosearch.leaflet-geosearch-button.active {
+  position: absolute ;
+  top: 54px;
+  text-align: center;
+  margin: 0;
+  left: 759px ;
+  border-radius: 47px
+}
+
+
+.leaflet-control-geosearch.active form {
+  display: block;
+  border-radius: 47px;
+  /* height: 14vh; */
+  margin: 0;
+  width: 291px;
+  padding: 10px 12px;
+  left: -250px;
+    top: -7px;
+}
+
+.leaflet-control-geosearch form input {
+  /* height: 14vh; */
+  border-radius: 47px;
+  width: 267px;
+  padding: 10px 12px;
+
+}
+.leaflet-touch .leaflet-control-geosearch a.reset{
+  border-radius: 47px;
+  display: none;
 }

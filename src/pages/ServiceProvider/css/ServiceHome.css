@@ -1,0 +1,47 @@
+.serviceSubTile {
+    display: flex;
+    justify-content: center;
+    font-family: 'Timmana';
+    font-style: normal;
+    /* font-weight: 600; */
+    font-size: 17px;
+    line-height: 28px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #000000;
+}
+
+.service-wallet-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.service-wallet-btn>button {
+
+    font-family: 'Timmana';
+    /* font-style: normal; */
+    /* font-weight: 400; */
+    /* font-size: 17px; */
+    /* line-height: 28px; */
+    background: linear-gradient(180deg, #FFE6EB 0%, #FFE6EB 100%);
+    border-radius: 40px;
+    /* padding: 7px 162px; */
+    /* margin-top: 143px; */
+}
+/* .service-discord{
+    position: absolute;
+    right: 100px;
+    bottom: 50px;
+} */
+
+.service-discord{
+    content: '';
+    /* position: relative; */
+    /* left: 450px; */
+    /* font-size: 40px; */
+    color: #ffffff;
+    /* display: inline-block; */
+    /* top: 180px; */
+}

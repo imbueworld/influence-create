@@ -1,0 +1,174 @@
+.dropdown-main {
+    height: 8%;
+    width: 25%;
+    border: 1px solid #000000;
+    border-radius: 47px;
+    background: transparent;
+}
+.checkbox-display{
+    display:none
+}
+
+#repeatingdays{
+    display: none;
+ }
+ #repeatingweek{
+     display: none;
+  }
+.days1{
+    background-color: black;
+    color: #ffffff;
+    border-radius: 50%;
+    /* color: white; */
+    padding: 12px;
+    border: 1px solid black;
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+    /* margin: 4px 2px; */
+    cursor: pointer;
+    height: 50px;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    
+
+  .focus:focus {
+    background-color: black;
+    color: #ffffff;
+  }
+  .focus1:focus{
+    background-color: black;
+    color: #ffffff;
+  }
+
+.dropdown-sub>div:nth-child(3), .dropdown-week-sub>div:nth-child(3) {
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+    height: 50px;
+    width: 140px;
+    border: 1px solid #000000;
+    border-radius: 47px;
+    background: transparent;
+}
+
+.dropdown-sub>div:first-child {
+    height: 50px;
+    width: 140px;
+    border: 1px solid #000000 !important;
+    border-radius: 47px !important;
+    background: transparent;
+}
+
+button.edit-btn {
+    height: 50px;
+    /* width: 140px; */
+    border: 1px solid #000000;
+    border-radius: 47px;
+    background: transparent;
+    /* margin-right: 77px; */
+}
+
+button.edit-btn:hover {
+    background-color: #000000;
+    color: #fff;
+}
+
+.weakdays-class {
+    width: 100%;
+    max-width: 90vw;
+}
+
+.weekdays-button {
+    /* background-color: #04AA6D; Green */
+    border: none;
+    border-radius: 50%;
+    /* color: white; */
+    padding: 12px;
+    border: 1px solid black;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 12px;
+    /* margin: 4px 2px; */
+    cursor: pointer;
+    height: 50px;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.weekdays-button:hover {
+    background-color: #000000;
+    color: #fff;
+}
+
+.dropdown-sub>div:nth-child(4) {
+    background-color: #000000;
+    border-radius: 47px;
+    color: #fff;
+    margin-left: 110% !important;
+    margin-top: -35px !important;
+    /* margin: 0 0 0px 200px !important; */
+    padding: 20px;
+    overflow-y: hidden !important;
+}
+
+/* .dropdown-sub>div:nth-child(4) {
+    background-color: #000000;
+    border-radius: 47px;
+    color: #fff;
+    padding: 15px;
+    margin-left: 200px !important;
+    margin-top: -60px !important;
+    overflow-y: hidden !important;
+    height: auto;
+} */
+
+.dropdown-week-sub>div:nth-child(4) {
+    background-color: #000000;
+    border-radius: 47px;
+    color: #fff;
+    /* padding: 15px; */
+    overflow-y: hidden !important;
+}
+
+.dropdown-sub>div:nth-child(4), .dropdown-week-sub>div:nth-child(4) {
+    overflow-y: hidden !important;
+}
+
+.dropdown-sub>div:nth-child(4) ::-webkit-scrollbar, .dropdown-week-sub>div:nth-child(4) ::-webkit-scrollbar {
+    display: none;
+}
+
+.dropdown-sub>div:nth-child(4), .dropdown-week-sub>div:nth-child(4) {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.dropdown-sub>div:nth-child(4) input:hover, .dropdown-sub>div:nth-child(4) input:active {
+    cursor: pointer !important;
+    background-color: #000000 !important;
+}
+
+.select-dropdownList:hover, .select-dropdownList:active {
+    background-color: #000000 !important;
+    cursor: pointer;
+    padding: 0;
+    outline: none;
+    margin: 0 !important;
+}
+
+@media screen and (max-width: 500px) {
+    .dropdown-sub>div:nth-child(4) {
+        margin-left: unset !important;
+        margin-top: unset !important;
+        padding: 20px;
+        overflow-y: hidden !important;
+    }
+}
