@@ -36,7 +36,7 @@ export default function PurchaseEvent({ metamaskProvider }) {
       const contract = await getContract();
       // const event = await contract._events(BigNumber.from(eventId));
       const event = viewerEventList.find((o) => o.id === eventId);
-      console.log("------------e", event);
+      // console.log("------------e", event);
       setEvent(event);
 
       const accarr = await metamaskProvider.request({

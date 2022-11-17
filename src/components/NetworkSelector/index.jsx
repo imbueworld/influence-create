@@ -12,11 +12,11 @@ import { isContractDeployed } from "../../web3/useContract";
 import { ethers } from "ethers";
 export default function NetworkSelector({ metamaskProvider }) {
   const data = [
-    {
-      value: "0x45",
-      text: "Optimistic-Test",
-      icon: <img src={OptimisticMain} width="45" height="45" alt=""></img>,
-    },
+    // {
+    //   value: "0x45",
+    //   text: "Optimistic-Test",
+    //   icon: <img src={OptimisticMain} width="45" height="45" alt=""></img>,
+    // },
     {
       value: "0xa",
       text: "Optimistic",

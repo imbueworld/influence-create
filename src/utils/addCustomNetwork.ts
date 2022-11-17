@@ -93,7 +93,7 @@ const Polygon_Mainnet = {
   blockExplorerUrls: ["https://polygonscan.com/"],
 };
 export const Networks = [
-  Optimistic_Ethereum_Kovan,
+  // Optimistic_Ethereum_Kovan,
   Optimistic_Ethereum,
   Harmony_Testnet_Shard_0,
   Harmony_Mainnet_Shard_0,

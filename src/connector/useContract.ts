@@ -790,14 +790,14 @@ const abiHarmonyTest = [
 ];
 
 const abis = new Map([
-  ["0x45", abiEthereumTest],
+  // ["0x45", abiEthereumTest],
   ["0xA", abiEthereum],
   ["0x6357D2E0", abiHarmonyTest],
   ["0x63564C40", abiHarmony],
 ]);
 
 const addressMap = new Map([
-  ["0x45", "0x0a02d9710a36e2F905F65F4f122556B70A900FFc"],
+  // ["0x45", "0x0a02d9710a36e2F905F65F4f122556B70A900FFc"],
   ["0xA", "0xb2d44f91bfba624369940645ef54ef86a1ee90f0"],
   ["0x6357D2E0", "0x188a6d53d2ad50deb9d3fa93edb8feceaf67b2be"],
   ["0x63564C40", "0x3829f87b08d6d37b319850fa17b2c081b1b83301"],

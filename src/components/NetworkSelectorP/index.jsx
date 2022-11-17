@@ -13,11 +13,11 @@ import { ethers } from "ethers";
 export default function NetworkSelector({ metamaskProvider, indexes ,  selectedOption,setSelectedOption}) {
   const [filterData,setFilterData] = useState([]);
   const data = [
-    {
-      value: "0x45",
-      text: "Optimistic-Test",
-      icon: <img src={OptimisticMain} width="45" height="45" alt=""></img>,
-    },
+    // {
+    //   value: "0x45",
+    //   text: "Optimistic-Test",
+    //   icon: <img src={OptimisticMain} width="45" height="45" alt=""></img>,
+    // },
     {
       value: "0xa",
       text: "Optimistic",
