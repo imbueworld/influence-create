@@ -110,26 +110,26 @@ export default function Home({ metamaskProvider }) {
   const homeData = address ? (
     <>
       <div className="md:text-3xl sm:text-2xl text-xl mb-3">
-        UPCOMING
+        Upcoming
         <br />
-        EVENTS
+        Events
       </div>
       <div className="flex flex-wrap items-center justify-center my-8">
         <ColoredButton onClick={handleCreateEvent} stylec="mx-4 my-4">
-          CREATE EVENT
+          Create Live Stream
         </ColoredButton>
-        <ColoredButton onClick={handleListEvent} stylec="mx-4 my-4">
+        {/* <ColoredButton onClick={handleListEvent} stylec="mx-4 my-4">
           GET EVENTS
         </ColoredButton>
         <ColoredButton onClick={handleListStream} stylec="mx-4 my-4">
           Explorere Page
-        </ColoredButton>
+        </ColoredButton> */}
         {/* <ColoredButton onClick={handleCreateSubscription} stylec="mx-4 my-4">
           CREATE SUBSCRIPTION
         </ColoredButton> */}
-        <ColoredButton onClick={handleListSubscriptions} stylec="mx-4 my-4">
+        {/* <ColoredButton onClick={handleListSubscriptions} stylec="mx-4 my-4">
           Subscriptions
-        </ColoredButton>
+        </ColoredButton> */}
       </div>
       <div className="grid grid-flow-row items-center justify-items-center">
         {response && response.length > 0 ? (
