@@ -148,12 +148,12 @@ export default function Home({ metamaskProvider }) {
   ) : (
     <>
       <p className="text-sm mb-4">
-        LIVESTREM TO YOUR FAVORITE
-        <br /> AUDIENCES AND GET PAID IN CRYPTO
+        Livestream to your favorite
+        <br /> audiences and get paid in crypto
       </p>
       <div className="text-3xl">
-        CONNECT YOUR
-        <br /> WALLET TO SIGN IN
+        Connect your
+        <br /> wallet to sign in
       </div>
       <div className="items-center justify-center my-5">
         <WalletSelector
