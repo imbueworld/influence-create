@@ -91,19 +91,19 @@ export default function Home({ metamaskProvider }) {
     navigate("/create-event");
   }
 
-  function handleListEvent() {
-    navigate("/list-event");
-  }
-  function handleListStream() {
-    navigate("/list-recorded");
-  }
-  function handleListSubscriptions() {
-    navigate("/list-subscriptions");
-  }
+  // function handleListEvent() {
+  //   navigate("/list-event");
+  // }
+  // function handleListStream() {
+  //   navigate("/list-recorded");
+  // }
+  // function handleListSubscriptions() {
+  //   navigate("/list-subscriptions");
+  // }
 
-  function handleCreateSubscription() {
-    navigate("/create-subscription");
-  }
+  // function handleCreateSubscription() {
+  //   navigate("/create-subscription");
+  // }
   // console.log(
   //   response)
   
