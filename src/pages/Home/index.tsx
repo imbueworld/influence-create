@@ -1,4 +1,4 @@
-import  { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { BeatLoader } from "react-spinners";
 import { BigNumber } from "ethers";
@@ -10,7 +10,7 @@ import ColoredButton from "../../components/ColoredButton";
 import { useContract } from "../../web3/useContract";
 import WalletSelector from "../../components/WalletSelector";
 import { useProvider } from "../../web3/useProvider";
-import {useGetEvents} from "./useGetEvents"
+import { useGetEvents } from "./useGetEvents"
 
 
 
@@ -19,7 +19,7 @@ export default function Home({ metamaskProvider }) {
   const [events, setEvents] = useState(null);
   const [address, setAddress] = useState(null);
   const [installedMetamask, setInstalledMetamask] = useState(true);
-  const  { response, error, loading1 } = useGetEvents();
+  const { response, error, loading1 } = useGetEvents();
   const { setProvider, getProvider, connectWallet, getAccounts, isConnected } =
     useProvider();
   const { getContract } = useContract();
@@ -106,7 +106,7 @@ export default function Home({ metamaskProvider }) {
   }
   // console.log(
   //   response)
-  
+
   const homeData = address ? (
     <>
       <div className="md:text-3xl sm:text-2xl text-xl mb-3">
@@ -118,22 +118,22 @@ export default function Home({ metamaskProvider }) {
         <ColoredButton onClick={handleCreateEvent} stylec="mx-4 my-4">
           CREATE EVENT
         </ColoredButton>
-        <ColoredButton onClick={handleListEvent} stylec="mx-4 my-4">
+        {/* <ColoredButton onClick={handleListEvent} stylec="mx-4 my-4">
           GET EVENTS
-        </ColoredButton>
-        <ColoredButton onClick={handleListStream} stylec="mx-4 my-4">
+        </ColoredButton> */}
+        {/* <ColoredButton onClick={handleListStream} stylec="mx-4 my-4">
           Explorere Page
-        </ColoredButton>
+        </ColoredButton> */}
         {/* <ColoredButton onClick={handleCreateSubscription} stylec="mx-4 my-4">
           CREATE SUBSCRIPTION
         </ColoredButton> */}
-        <ColoredButton onClick={handleListSubscriptions} stylec="mx-4 my-4">
+        {/* <ColoredButton onClick={handleListSubscriptions} stylec="mx-4 my-4">
           Subscriptions
-        </ColoredButton>
+        </ColoredButton> */}
       </div>
       <div className="grid grid-flow-row items-center justify-items-center">
         {response && response.length > 0 ? (
-          response?.map((event) => ( 
+          response?.map((event) => (
             <EventItem
               key={event["id"]}
               event={Object.assign(event)}
@@ -141,7 +141,11 @@ export default function Home({ metamaskProvider }) {
             />
           ))
         ) : (
-          <div className="text-2xl mt-3">NO UPCOMING EVENTS... CREATE ONE</div>
+          <div className="text-2xl mt-3">NO UPCOMING EVENTS...
+            <a href="#" onClick={handleCreateEvent} style={{ cursor: 'pointer' }}>
+              CREATE ONE
+            </a>
+          </div>
         )}
       </div>
     </>
