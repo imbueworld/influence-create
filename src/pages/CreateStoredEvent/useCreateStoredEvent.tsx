@@ -34,7 +34,7 @@ const useCreateStoredEvent = ({ metamaskProvider }) => {
     // {
     //   value: "0xA4B1",
     //   text: "Arbitrum",
-    //   icon: <img src={Arbitrum_logo} width="45" height="45" alt=""></img>,
+    //   // icon: <img src={Arbitrum_logo} width="45" height="45" alt=""></img>,
     // },
     {
       value: "0x13881",

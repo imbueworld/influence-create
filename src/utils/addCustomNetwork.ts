@@ -25,39 +25,39 @@ const Optimistic_Ethereum = {
   rpcUrls: ["https://mainnet.optimism.io"],
   blockExplorerUrls: ["https://optimistic.etherscan.io"],
 };
-const Harmony_Testnet_Shard_0 = {
-  chainId: "0x6357D2E0",
-  chainName: "Harmony Testnet Shard 0",
-  nativeCurrency: {
-    name: "Harmony ONE",
-    symbol: "ONE",
-    decimals: 18,
-  },
-  rpcUrls: ["https://api.s0.b.hmny.io"],
-  blockExplorerUrls: ["https://explorer.testnet.harmony.one/"],
-};
-const Harmony_Mainnet_Shard_0 = {
-  chainId: "0x63564C40",
-  chainName: "Harmony Mainnet Shard 0",
-  nativeCurrency: {
-    name: "Harmony ONE",
-    symbol: "ONE",
-    decimals: 18,
-  },
-  rpcUrls: ["https://api.harmony.one"],
-  blockExplorerUrls: ["https://explorer.harmony.one/"],
-};
-const Arbitrum_Testnet_Rinkeby = {
-  chainId: "0x66EEB",
-  chainName: "Arbitrum Testnet Rinkeby",
-  nativeCurrency: {
-    name: "Arbitrum ARETH",
-    symbol: "ARETH",
-    decimals: 18,
-  },
-  rpcUrls: ["https://rinkeby.arbitrum.io/rpc"],
-  blockExplorerUrls: ["https://testnet.arbiscan.io/"],
-};
+// const Harmony_Testnet_Shard_0 = {
+//   chainId: "0x6357D2E0",
+//   chainName: "Harmony Testnet Shard 0",
+//   nativeCurrency: {
+//     name: "Harmony ONE",
+//     symbol: "ONE",
+//     decimals: 18,
+//   },
+//   rpcUrls: ["https://api.s0.b.hmny.io"],
+//   blockExplorerUrls: ["https://explorer.testnet.harmony.one/"],
+// };
+// const Harmony_Mainnet_Shard_0 = {
+//   chainId: "0x63564C40",
+//   chainName: "Harmony Mainnet Shard 0",
+//   nativeCurrency: {
+//     name: "Harmony ONE",
+//     symbol: "ONE",
+//     decimals: 18,
+//   },
+//   rpcUrls: ["https://api.harmony.one"],
+//   blockExplorerUrls: ["https://explorer.harmony.one/"],
+// };
+// const Arbitrum_Testnet_Rinkeby = {
+//   chainId: "0x66EEB",
+//   chainName: "Arbitrum Testnet Rinkeby",
+//   nativeCurrency: {
+//     name: "Arbitrum ARETH",
+//     symbol: "ARETH",
+//     decimals: 18,
+//   },
+//   rpcUrls: ["https://rinkeby.arbitrum.io/rpc"],
+//   blockExplorerUrls: ["https://testnet.arbiscan.io/"],
+// };
 const Arbitrum_Mainnet = {
   chainId: "0xA4B1",
   chainName: "Arbitrum",
@@ -78,7 +78,7 @@ const Polygon_Testnet = {
     symbol: "MATIC",
     decimals: 18,
   },
-  rpcUrls: ["https://rpc-mumbai.maticvigil.com/"],
+  rpcUrls: ["https://rpc.ankr.com/polygon_mumbai"],
   blockExplorerUrls: ["https://mumbai.polygonscan.com/"],
 };
 const Polygon_Mainnet = {
@@ -95,9 +95,9 @@ const Polygon_Mainnet = {
 export const Networks = [
   Optimistic_Ethereum_Kovan,
   Optimistic_Ethereum,
-  Harmony_Testnet_Shard_0,
-  Harmony_Mainnet_Shard_0,
-  Arbitrum_Testnet_Rinkeby,
+  // Harmony_Testnet_Shard_0,
+  // Harmony_Mainnet_Shard_0,
+  // Arbitrum_Testnet_Rinkeby,
   Arbitrum_Mainnet,
   Polygon_Testnet,
   Polygon_Mainnet,

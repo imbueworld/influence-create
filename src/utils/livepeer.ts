@@ -3,8 +3,8 @@ const carrabreApi = "9ab2a15c-f802-4800-855b-18687b4026f1";
 const apiKey = carrabreApi;
 const streamName = "IMBUE Test Stream";
 const webSocketServerURL = "wss://infuluence-proxy.herokuapp.com";
-// const proxyURL = "https://infuluence-proxy.herokuapp.com/api/stream";
-const proxyURL = "https://imbue-proxy.herokuapp.com/api/stream";
+const proxyURL = "https://infuluence-proxy.herokuapp.com/api/stream";
+// const proxyURL = "https://imbue-proxy.herokuapp.com/api/stream";
 // const proxyURL = "http://localhost:3001/api/stream";
 
 const streamProfiles = [

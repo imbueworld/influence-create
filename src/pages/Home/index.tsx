@@ -91,32 +91,32 @@ export default function Home({ metamaskProvider }) {
     navigate("/create-event");
   }
 
-  function handleListEvent() {
-    navigate("/list-event");
-  }
-  function handleListStream() {
-    navigate("/list-recorded");
-  }
-  function handleListSubscriptions() {
-    navigate("/list-subscriptions");
-  }
+  // function handleListEvent() {
+  //   navigate("/list-event");
+  // }
+  // function handleListStream() {
+  //   navigate("/list-recorded");
+  // }
+  // function handleListSubscriptions() {
+  //   navigate("/list-subscriptions");
+  // }
 
-  function handleCreateSubscription() {
-    navigate("/create-subscription");
-  }
+  // function handleCreateSubscription() {
+  //   navigate("/create-subscription");
+  // }
   // console.log(
   //   response)
 
   const homeData = address ? (
     <>
       <div className="md:text-3xl sm:text-2xl text-xl mb-3">
-        UPCOMING
+        Upcoming
         <br />
-        EVENTS
+        Events
       </div>
       <div className="flex flex-wrap items-center justify-center my-8">
         <ColoredButton onClick={handleCreateEvent} stylec="mx-4 my-4">
-          CREATE EVENT
+          Create Live Stream
         </ColoredButton>
         {/* <ColoredButton onClick={handleListEvent} stylec="mx-4 my-4">
           GET EVENTS
@@ -152,12 +152,12 @@ export default function Home({ metamaskProvider }) {
   ) : (
     <>
       <p className="text-sm mb-4">
-        LIVESTREM TO YOUR FAVORITE
-        <br /> AUDIENCES AND GET PAID IN CRYPTO
+        Livestream to your favorite
+        <br /> audiences and get paid in crypto
       </p>
       <div className="text-3xl">
-        CONNECT YOUR
-        <br /> WALLET TO SIGN IN
+        Connect your
+        <br /> wallet to sign in
       </div>
       <div className="items-center justify-center my-5">
         <WalletSelector

@@ -78,11 +78,11 @@ const useCreateEvent = ({ metamaskProvider }) => {
       text: "Polygon Testnet",
       // icon: <img src={Polygon} width="45" height="45" alt=""></img>,
     },
-    // {
-    //   value: "0x89",
-    //   text: "Polygon",
-    //   icon: <img src={Polygon} width="45" height="45" alt=""></img>,
-    // },
+    {
+      value: "0x89",
+      text: "Polygon",
+      // icon: <img src={Polygon} width="45" height="45" alt=""></img>,
+    },
   ];
 
   // const contract = getContract(metamaskProvider);
