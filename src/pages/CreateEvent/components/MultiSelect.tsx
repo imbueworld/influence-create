@@ -16,11 +16,11 @@ import { ethers } from "ethers";
 
 export default function NetworkSelector({ metamaskProvider,selectedOptions,setSelectedOptions }) {
   const data = [
-    {
-      value: "0x45",
-      text: "Optimistic-Test",
-      icon: <img src={OptimisticMain} width="45" height="45" alt=""></img>,
-    },
+    // {
+    //   value: "0x45",
+    //   text: "Optimistic-Test",
+    //   icon: <img src={OptimisticMain} width="45" height="45" alt=""></img>,
+    // },
     // {
     //   value: "0xa",
     //   text: "Optimistic",
@@ -36,11 +36,11 @@ export default function NetworkSelector({ metamaskProvider,selectedOptions,setSe
     //   text: "Harmony",
     //   icon: <img src={Harmony} width="45" height="45" alt=""></img>,
     // }, ///Added 01/18/2022
-    {
-      value: "0x66EEB",
-      text: "Arbitrum Testnet",
-      icon: <img src={Arbitrum_logo} width="45" height="45" alt=""></img>,
-    },
+    // {
+    //   value: "0x66EEB",
+    //   text: "Arbitrum Testnet",
+    //   icon: <img src={Arbitrum_logo} width="45" height="45" alt=""></img>,
+    // },
     // {
     //   value: "0xA4B1",
     //   text: "Arbitrum",
@@ -51,11 +51,11 @@ export default function NetworkSelector({ metamaskProvider,selectedOptions,setSe
       text: "Polygon Testnet",
       icon: <img src={Polygon} width="45" height="45" alt=""></img>,
     },
-    // {
-    //   value: "0x89",
-    //   text: "Polygon",
-    //   icon: <img src={Polygon} width="45" height="45" alt=""></img>,
-    // },
+    {
+      value: "0x89",
+      text: "Polygon",
+      icon: <img src={Polygon} width="45" height="45" alt=""></img>,
+    },
   ];
 
   function getDropdownButtonLabel({ placeholderButtonLabel, value }) {

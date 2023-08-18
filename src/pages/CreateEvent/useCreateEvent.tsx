@@ -43,31 +43,31 @@ const useCreateEvent = ({ metamaskProvider }) => {
   ];
 
   const data = [
-    {
-      value: "0x45",
-      text: "Optimistic-Test",
-      // icon: <img src={OptimisticMain} width="45" height="45" alt=""></img>,
-    },
+    // {
+    //   value: "0x45",
+    //   text: "Optimistic-Test",
+    //   // icon: <img src={OptimisticMain} width="45" height="45" alt=""></img>,
+    // },
     // {
     //   value: "0xa",
     //   text: "Optimistic",
     //   icon: <img src={OptimisticMain} width="45" height="45" alt=""></img>,
     // },
-    {
-      value: "0x6357D2E0",
-      text: "Harmony-Test",
-      // icon: <img src={Harmony} width="45" height="45" alt=""></img>,
-    },
+    // {
+    //   value: "0x6357D2E0",
+    //   text: "Harmony-Test",
+    //   // icon: <img src={Harmony} width="45" height="45" alt=""></img>,
+    // },
     // {
     //   value: "0x63564C40",
     //   text: "Harmony",
     //   icon: <img src={Harmony} width="45" height="45" alt=""></img>,
     // }, ///Added 01/18/2022
-    {
-      value: "0x66EEB",
-      text: "Arbitrum Testnet",
-      // icon: <img src={Arbitrum_logo} width="45" height="45" alt=""></img>,
-    },
+    // {
+    //   value: "0x66EEB",
+    //   text: "Arbitrum Testnet",
+    //   // icon: <img src={Arbitrum_logo} width="45" height="45" alt=""></img>,
+    // },
     // {
     //   value: "0xA4B1",
     //   text: "Arbitrum",
@@ -78,11 +78,11 @@ const useCreateEvent = ({ metamaskProvider }) => {
       text: "Polygon Testnet",
       // icon: <img src={Polygon} width="45" height="45" alt=""></img>,
     },
-    // {
-    //   value: "0x89",
-    //   text: "Polygon",
-    //   icon: <img src={Polygon} width="45" height="45" alt=""></img>,
-    // },
+    {
+      value: "0x89",
+      text: "Polygon",
+      // icon: <img src={Polygon} width="45" height="45" alt=""></img>,
+    },
   ];
 
   // const contract = getContract(metamaskProvider);
