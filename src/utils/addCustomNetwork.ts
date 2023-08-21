@@ -78,7 +78,7 @@ const Polygon_Testnet = {
     symbol: "MATIC",
     decimals: 18,
   },
-  rpcUrls: ["https://rpc.ankr.com/polygon_mumbai"],
+  rpcUrls: ["https://polygon-mumbai-bor.publicnode.com"],
   blockExplorerUrls: ["https://mumbai.polygonscan.com/"],
 };
 const Polygon_Mainnet = {
