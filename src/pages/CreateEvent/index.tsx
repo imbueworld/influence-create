@@ -316,7 +316,7 @@ export default function CreateEvent({ metamaskProvider }) {
             min="0"
           />
         ) : null}
-        <div className="flex justify-center gap-1 align-center">
+        {/* <div className="flex justify-center gap-1 align-center">
           <div>Recording</div>
           <div>
             <input
@@ -328,7 +328,7 @@ export default function CreateEvent({ metamaskProvider }) {
               }}
             />
           </div>
-        </div>
+        </div> */}
 
         <ColoredButton
           type="submit"

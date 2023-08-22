@@ -62,7 +62,7 @@ export default function JoinStream({ metamaskProvider }) {
       const streamArray = streamData.split("&&");
       setStreamId(streamArray[0]);
       const playbackId = streamArray[2];
-      setPlaybackURL(`https://cdn.livepeer.com/hls/${playbackId}/index.m3u8`);
+      setPlaybackURL(`https://livepeercdn.studio/hls/${playbackId}/index.m3u8`);
       setLoading(false);
     }
     fetchData().catch((err) => console.error(err));
@@ -230,9 +230,9 @@ export default function JoinStream({ metamaskProvider }) {
         ) : null}
       </div>
       <EventDescription event={event} stylec="w-3/4 mx-auto" />
-      <ColoredButton onClick={onUploadtoipfs} stylec="mt-4 my-8 bg-[#defcfb]">
+      {/* <ColoredButton onClick={onUploadtoipfs} stylec="mt-4 my-8 bg-[#defcfb]">
         Get Nft
-      </ColoredButton>
+      </ColoredButton> */}
 
       {nftObj ? (
         <>
