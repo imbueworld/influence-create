@@ -7,7 +7,7 @@ import sendIcon from "./send.svg";
 import closeIcon from "./close.svg";
 
 export default function ChatContainer({ username, room, handler }) {
-  const chatServerURL = "https://imbue-chat-server.herokuapp.com";
+  // const chatServerURL = "https://imbue-chat-server.herokuapp.com";
   const [messages, setMessage] = useState([]);
   const [messageToSend, setMessageToSend] = useState("");
   const socket = useRef(null);
@@ -15,28 +15,28 @@ export default function ChatContainer({ username, room, handler }) {
   const feedback = useRef(null);
   const container = useRef(null);
 
-  useEffect(() => {
-    async function fetchData() {
-      console.log(socket.current);
-      socket.current = await io(chatServerURL);
-      //On new message
-      socket.current.on("message", (data) => {
-        const newMessage = { username: data.username, content: data.message };
-        setMessage((messages) => messages.concat(newMessage));
-      });
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     console.log(socket.current);
+  //     socket.current = await io(chatServerURL);
+  //     //On new message
+  //     socket.current.on("message", (data) => {
+  //       const newMessage = { username: data.username, content: data.message };
+  //       setMessage((messages) => messages.concat(newMessage));
+  //     });
 
-      //Listen on typing
-      socket.current.on("typing", (data) => {
-        if (data.username === username) return;
+  //     //Listen on typing
+  //     socket.current.on("typing", (data) => {
+  //       if (data.username === username) return;
 
-        feedback.current.innerHTML =
-          "<p><i>" + data.username + " is typing a message...</i></p>";
-      });
+  //       feedback.current.innerHTML =
+  //         "<p><i>" + data.username + " is typing a message...</i></p>";
+  //     });
 
-      socket.current.emit("join", { username, room }, onJoin);
-    }
-    fetchData();
-  }, []);
+  //     socket.current.emit("join", { username, room }, onJoin);
+  //   }
+  //   fetchData();
+  // }, []);
 
   useEffect(() => {
     feedback.current.innerHTML = "";

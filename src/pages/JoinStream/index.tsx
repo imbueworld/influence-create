@@ -8,7 +8,7 @@ import ReactHlsPlayer from "react-hls-player";
 import Header from "../../components/Header";
 import EventDescription from "../../components/EventDescription";
 import { BeatLoader } from "react-spinners";
-import ChatContainer from "../../components/ChatContainer";
+// import ChatContainer from "../../components/ChatContainer";
 import { _fetchData } from "ethers/lib/utils";
 import { ethers } from "ethers";
 import { create as ipfsHttpClient } from "ipfs-http-client";
@@ -221,13 +221,13 @@ export default function JoinStream({ metamaskProvider }) {
           </div>
         </div>
 
-        {chatting ? (
+        {/* {chatting ? (
           <ChatContainer
             username={walletAddress}
             room={streamId}
             handler={handleChat}
           />
-        ) : null}
+        ) : null} */}
       </div>
       <EventDescription event={event} stylec="w-3/4 mx-auto" />
       {/* <ColoredButton onClick={onUploadtoipfs} stylec="mt-4 my-8 bg-[#defcfb]">

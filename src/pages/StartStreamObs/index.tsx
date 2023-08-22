@@ -7,7 +7,7 @@ import { BigNumber } from "ethers";
 import { BeatLoader } from "react-spinners";
 import EventDescription from "../../components/EventDescription";
 import { deleteStream, getStreamStatus } from "../../utils/apiFactory";
-import ChatContainer from "../../components/ChatContainer";
+// import ChatContainer from "../../components/ChatContainer";
 
 const CryptoJS = require("crypto-js");
 
@@ -197,13 +197,13 @@ export default function StartStreamObs({ metamaskProvider }) {
                 )}
               </div>
             </div>
-            {chatting ? (
+            {/* {chatting ? (
               <ChatContainer
                 username={walletAddress}
                 room={streamId}
                 handler={handleChat}
               />
-            ) : null}
+            ) : null} */}
           </>
         )}
       </div>

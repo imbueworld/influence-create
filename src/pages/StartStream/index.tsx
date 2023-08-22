@@ -12,7 +12,7 @@ import { BeatLoader } from "react-spinners";
 import { livepeer } from "../../utils/livepeer";
 import EventDescription from "../../components/EventDescription";
 import { deleteStream, getStreamStatus } from "../../utils/apiFactory";
-import ChatContainer from "../../components/ChatContainer";
+// import ChatContainer from "../../components/ChatContainer";
 import screenEnabledIcon from "./screen_enabled.svg";
 import screenDisabledIcon from "./screen_disabled.svg";
 import "./ReplaceableMediaStream";
@@ -427,13 +427,13 @@ setcameraConst((pre)=>pre.facingMode==="environment"?{audio: true,
                 )}
               </div>
             </div>
-            {chatting ? (
+            {/* {chatting ? (
               <ChatContainer
                 username={walletAddress}
                 room={streamId}
                 handler={handleChat}
               />
-            ) : null}
+            ) : null} */}
           </>
         )}
       </div>
